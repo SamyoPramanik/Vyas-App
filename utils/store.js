@@ -1,0 +1,51 @@
+import { create } from "zustand";
+
+const useSecureStorage = create((set) => ({
+    player1Moves: [],
+    player2Moves: [],
+    player1Name: "",
+    player2Name: "",
+    connectedDevice: null,
+    availableCards: [],
+    player1CurrentCards: [],
+    player2CurrentCards: [],
+    recentMoves: [],
+    isGameFinished: false,
+    winner: "",
+    forwardCommand: "f",
+    backwardCommand: "b",
+    leftCommand: "l",
+    rightCommand: "r",
+    junctionCommand: "junction",
+    finishCommand: "finish",
+    setPlayer1Moves: (moves) => set({ player1Moves: moves }),
+    setPlayer2Moves: (moves) => set({ player2Moves: moves }),
+    setPlayer1Name: (name) => set({ player1Name: name }),
+    setPlayer2Name: (name) => set({ player2Name: name }),
+    setConnectedDevice: (device) => set({ connectedDevice: device }),
+    setAvailableCards: (cards) => set({ availableCards: cards }),
+    setPlayer1CurrentCards: (cards) => set({ player1CurrentCards: cards }),
+    setPlayer2CurrentCards: (cards) => set({ player2CurrentCards: cards }),
+    setIsGameFinished: (isFinished) => set({ isGameFinished: isFinished }),
+    setWinner: (winner) => set({ winner }),
+    setRecentMoves: (moves) => set({ recentMoves: moves }),
+    setForwardCommand: (command) => set({ forwardCommand: command }),
+    setBackwardCommand: (command) => set({ backwardCommand: command }),
+    setLeftCommand: (command) => set({ leftCommand: command }),
+    setRightCommand: (command) => set({ rightCommand: command }),
+    setJunctionCommand: (command) => set({ junctionCommand: command }),
+    setFinishCommand: (command) => set({ finishCommand: command }),
+
+    resetStore: () =>
+        set({
+            player1Moves: [],
+            player2Moves: [],
+            player1Name: "",
+            player2Name: "",
+            connectedDevice: null,
+            availableCards: [],
+            cards: [],
+        }),
+}));
+
+export default useSecureStorage;

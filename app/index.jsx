@@ -1,6 +1,13 @@
-import { PermissionsAndroid, Platform, Text, View } from "react-native";
+import {
+    PermissionsAndroid,
+    Platform,
+    Text,
+    Touchable,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Stack } from "expo-router";
+import { router, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useState } from "react";
 
@@ -52,14 +59,23 @@ export default function App() {
         <SafeAreaView className="flex-1">
             <Stack.Screen
                 options={{
-                    title: "Home",
-                    headerTitleAlign: "center",
-                    headerShown: true,
+                    headerShown: false,
                 }}
             />
-            <Text className="text-xl font-bold text-blue-500">
-                Welcome to Nativewind!
-            </Text>
+            <View className="flex-1 items-center justify-center">
+                <Text className="text-3xl font-bold">Welcome to Vyas!</Text>
+                <TouchableOpacity
+                    onPress={() => {
+                        router.replace("/names");
+                    }}
+                    className="mt-6 p-4 bg-blue-500 rounded-lg"
+                    activeOpacity={0.7}
+                >
+                    <Text className="text-lg w-full px-6 text-white font-bold">
+                        Start Game
+                    </Text>
+                </TouchableOpacity>
+            </View>
         </SafeAreaView>
     );
 }

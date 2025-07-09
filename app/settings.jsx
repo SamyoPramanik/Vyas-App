@@ -10,6 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import useSecureStorage from "../utils/store";
+import { Picker } from "@react-native-picker/picker";
 
 const SettingsPage = () => {
     const [settings, setSettings] = useState({
@@ -19,6 +20,7 @@ const SettingsPage = () => {
         rightCommand: "r",
         junctionCommand: "junction",
         finishCommand: "finish",
+        cameraFacing: "back",
     });
     const store = useSecureStorage();
 
@@ -39,6 +41,8 @@ const SettingsPage = () => {
                 const finishCommand =
                     (await SecureStore.getItemAsync("finishCommand")) ||
                     "finish";
+                const cameraFacing =
+                    (await SecureStore.getItemAsync("cameraFacing")) || "back";
 
                 setSettings({
                     forwardCommand,
@@ -47,6 +51,7 @@ const SettingsPage = () => {
                     rightCommand,
                     junctionCommand,
                     finishCommand,
+                    cameraFacing,
                 });
             } catch (error) {
                 console.error("Error loading settings:", error);
@@ -68,6 +73,7 @@ const SettingsPage = () => {
             store.setRightCommand(settings.rightCommand);
             store.setJunctionCommand(settings.junctionCommand);
             store.setFinishCommand(settings.finishCommand);
+            store.setCameraFacing(settings.cameraFacing);
 
             await SecureStore.setItemAsync(
                 "forwardCommand",
@@ -89,6 +95,10 @@ const SettingsPage = () => {
             await SecureStore.setItemAsync(
                 "finishCommand",
                 settings.finishCommand
+            );
+            await SecureStore.setItemAsync(
+                "cameraFacing",
+                settings.cameraFacing
             );
             showToast("Settings saved successfully!");
         } catch (error) {
@@ -115,11 +125,11 @@ const SettingsPage = () => {
                     <Text className="font-bold">Forward Command</Text>
                     <TextInput
                         onChangeText={(text) =>
-                            setSettings("forwardCommand", text)
+                            handleInputChange("forwardCommand", text)
                         }
                         value={settings.forwardCommand}
                         className="border border-gray-300 p-3 rounded-md mb-4"
-                        placeholder="Player 1"
+                        placeholder="Forward Command"
                     />
                 </View>
                 <View className="flex gap-1">
@@ -176,6 +186,21 @@ const SettingsPage = () => {
                         className="border border-gray-300 p-3 rounded-md mb-4"
                         placeholder="Finish Command"
                     />
+                </View>
+                <View className="flex gap-1">
+                    <Text className="font-bold">Camera Facing</Text>
+                    <View className="border border-gray-300 rounded-md">
+                        <Picker
+                            selectedValue={settings.cameraFacing}
+                            onValueChange={(itemValue) =>
+                                handleInputChange("cameraFacing", itemValue)
+                            }
+                            style={{ padding: 0, margin: 0, height: 50 }}
+                        >
+                            <Picker.Item label="Back" value="back" />
+                            <Picker.Item label="Front" value="front" />
+                        </Picker>
+                    </View>
                 </View>
                 <View className="flex mt-6">
                     <TouchableOpacity

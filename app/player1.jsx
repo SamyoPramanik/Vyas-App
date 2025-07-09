@@ -1,10 +1,4 @@
-import {
-    View,
-    Text,
-    ToastAndroid,
-    Touchable,
-    TouchableOpacity,
-} from "react-native";
+import { View, Text, ToastAndroid, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack } from "expo-router";
@@ -18,6 +12,7 @@ const Player1 = () => {
     const [myCards, setMyCards] = useState([]);
     const [qrCodeData, setQrCodeData] = useState("");
     const [permission, requestPermission] = useCameraPermissions();
+    const [cameraFacing, setCameraFacing] = useState("back");
 
     const showToast = (message) => {
         ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -27,6 +22,10 @@ const Player1 = () => {
         // Set myCards from store
         setMyCards(store.player1CurrentCards || []);
     }, []);
+
+    useEffect(() => {
+        setCameraFacing(store.cameraFacing || "back");
+    }, [store.cameraFacing]);
     return (
         <SafeAreaView className="flex-1 p-6 box-border">
             <Stack.Screen
@@ -50,7 +49,7 @@ const Player1 = () => {
                 {permission?.granted ? (
                     <CameraView
                         className="flex"
-                        facing="back"
+                        facing={cameraFacing}
                         barcodeScannerSettings={{
                             barcodeTypes: ["qr"],
                         }}

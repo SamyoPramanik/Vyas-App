@@ -18,6 +18,7 @@ const useSecureStorage = create((set) => ({
     rightCommand: "r",
     junctionCommand: "junction",
     finishCommand: "finish",
+    playerToMove: "player1",
     setPlayer1Moves: (moves) => set({ player1Moves: moves }),
     setPlayer2Moves: (moves) => set({ player2Moves: moves }),
     setPlayer1Name: (name) => set({ player1Name: name }),
@@ -35,6 +36,7 @@ const useSecureStorage = create((set) => ({
     setRightCommand: (command) => set({ rightCommand: command }),
     setJunctionCommand: (command) => set({ junctionCommand: command }),
     setFinishCommand: (command) => set({ finishCommand: command }),
+    setPlayerToMove: (player) => set({ playerToMove: player }),
 
     resetStore: () =>
         set({

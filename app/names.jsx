@@ -25,9 +25,17 @@ const NamesPage = () => {
         const availableCards = store.availableCards;
         const player1Cards = [];
         const player2Cards = [];
-        for (let i = 0; i < 4; i++) {
-            const idx1 = Math.floor(Math.random() * availableCards.length);
-            const idx2 = Math.floor(Math.random() * availableCards.length);
+        for (let i = 0; i < 2; i++) {
+            const idx1 = Math.floor(Math.random() * 1000) % 4;
+            const idx2 = Math.floor(Math.random() * 1000) % 4;
+            const card1 = availableCards[idx1];
+            const card2 = availableCards[idx2];
+            player1Cards.push(card1);
+            player2Cards.push(card2);
+        }
+        for (let i = 0; i < 2; i++) {
+            const idx1 = (Math.floor(Math.random() * 1000) % 7) + 4;
+            const idx2 = (Math.floor(Math.random() * 1000) % 7) + 4;
             const card1 = availableCards[idx1];
             const card2 = availableCards[idx2];
             player1Cards.push(card1);

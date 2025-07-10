@@ -1,4 +1,10 @@
-import { View, Text, ToastAndroid, TouchableOpacity } from "react-native";
+import {
+    View,
+    Text,
+    ToastAndroid,
+    TouchableOpacity,
+    Button,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router, Stack } from "expo-router";
@@ -6,9 +12,8 @@ import Toolbar from "../components/Toolbar";
 import useSecureStorage from "../utils/store";
 import SingleCard from "../components/SingleCard";
 import { CameraView, useCameraPermissions } from "expo-camera";
-import { Button } from "react-native";
 
-const Player1 = () => {
+const Player2 = () => {
     const store = useSecureStorage();
     const [myCards, setMyCards] = useState([]);
     const [currentCard, setCurrentCard] = useState("");
@@ -39,13 +44,13 @@ const Player1 = () => {
     const saveMoveAndChangePlayer = (move) => {
         store.setPlayer1Moves((prev) => [...prev, move]);
         store.setRecentMoves((prev) => [...prev, move]);
-        store.setPlayerToMove("player2");
+        store.setPlayerToMove("player1");
         setCurrentCard("");
         setCurrentCard2("");
     };
 
     const sendMyLastCard = () => {
-        const lastCard = store.player1Moves[store.player1Moves.length - 1];
+        const lastCard = store.player2Moves[store.player2Moves.length - 1];
         if (lastCard === "forward") sendCommand(store.forwardCommand);
         else if (lastCard === "backward") sendCommand(store.backwardCommand);
         else if (lastCard === "left") sendCommand(store.leftCommand);
@@ -77,7 +82,7 @@ const Player1 = () => {
 
     useEffect(() => {
         // Set myCards from store
-        setMyCards(store.player1CurrentCards || []);
+        setMyCards(store.player2CurrentCards || []);
         setCameraFacing(store.cameraFacing || "back");
         setCurrentCard("");
         setCurrentCard2("");
@@ -90,27 +95,27 @@ const Player1 = () => {
     }, [store.cameraFacing]);
 
     useEffect(() => {
-        if (inJunction === true && store.playerToMove === "player1") {
+        if (inJunction === true && store.playerToMove === "player2") {
             switch (currentCard) {
                 case "forward":
                     sendCommand(store.forwardCommand);
                     saveMoveAndChangePlayer("forward");
-                    router.replace("/player2");
+                    router.replace("/player1");
                     break;
                 case "backward":
                     sendCommand(store.backwardCommand);
                     saveMoveAndChangePlayer("backward");
-                    router.replace("/player2");
+                    router.replace("/player1");
                     break;
                 case "left":
                     sendCommand(store.leftCommand);
                     saveMoveAndChangePlayer("left");
-                    router.replace("/player2");
+                    router.replace("/player1");
                     break;
                 case "right":
                     sendCommand(store.rightCommand);
                     saveMoveAndChangePlayer("right");
-                    router.replace("/player2");
+                    router.replace("/player1");
                     break;
                 case "block":
                     sendCurrentCard2();
@@ -120,7 +125,7 @@ const Player1 = () => {
                 case "wild":
                     sendRandomCommand();
                     saveMoveAndChangePlayer("wild");
-                    router.replace("/player2");
+                    router.replace("/player1");
                     break;
                 case "echo":
                     sendMyLastCard();
@@ -129,24 +134,28 @@ const Player1 = () => {
                     sendLastCard();
                     break;
                 case "skip":
-                    store.setPlayerToMove("player2");
-                    router.replace("/player2");
+                    store.setPlayerToMove("player1");
+                    router.replace("/player1");
                     break;
                 case "ban":
                     break;
                 case "hack":
                     break;
             }
-            setInJunction(false);
         }
     }, [inJunction]);
 
     const handleQrCode = (data) => {
-        if (parseInt(data) > 3) {
+        if (parseInt(data) < 4 || parseInt(data) > 7) {
             showToast("Invalid card selected");
+            setCurrentCard("");
+            setCurrentCard2("");
+            setCurrentCardId(4);
+            setCurrentCard2Id(4);
             return;
         }
-        const card = myCards[parseInt(data)];
+        const cardIndex = parseInt(data) % 4; // Adjust index to match myCards array
+        const card = myCards[parseInt(cardIndex)];
 
         if (card === undefined) {
             showToast("Invalid card selected");
@@ -161,11 +170,11 @@ const Player1 = () => {
                 card === "right")
         ) {
             setCurrentCard2(card);
-            setCurrentCard2Id(parseInt(data));
+            setCurrentCard2Id(cardIndex);
         } else {
             setCurrentCard(card);
             setCurrentCard2("");
-            setCurrentCardId(parseInt(data));
+            setCurrentCardId(cardIndex);
             setCurrentCard2Id(4);
         }
     };
@@ -180,7 +189,7 @@ const Player1 = () => {
             <Toolbar />
             <View className="flex h-12 items-center justify-center">
                 <Text className="text-xl">
-                    <Text className="font-bold">{`${store.player1Name}`}</Text>
+                    <Text className="font-bold">{`${store.player2Name}`}</Text>
                     {`'s turn`}
                 </Text>
             </View>
@@ -228,4 +237,4 @@ const Player1 = () => {
     );
 };
 
-export default Player1;
+export default Player2;

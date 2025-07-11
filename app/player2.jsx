@@ -39,8 +39,17 @@ const Player2 = () => {
         ToastAndroid.show(message, ToastAndroid.SHORT);
     };
 
-    const sendCommand = (command) => {
+    const sendCommand = async (command) => {
         showToast(`Sending command: ${command}`);
+        if (store.connectedDevice && command) {
+            try {
+                await store.connectedDevice.write(command + "\n");
+                showToast(`Sent: ${command}`);
+            } catch (err) {
+                showToast(`Send failed: ${err}`);
+            }
+        }
+        showToast(`Command sent: ${command}`);
     };
 
     const sendCurrentCard2 = () => {
@@ -163,8 +172,10 @@ const Player2 = () => {
                     router.replace("/waiting");
                     break;
                 case "ban":
+                    router.replace("/waiting");
                     break;
                 case "hack":
+                    router.replace("/waiting");
                     break;
             }
             setInJunction(false);

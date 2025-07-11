@@ -34,6 +34,7 @@ const Player1 = () => {
     };
 
     const sendCommand = async (command) => {
+        showToast(`Sending command: ${command}`);
         if (store.connectedDevice && command) {
             try {
                 await store.connectedDevice.write(command + "\n");
@@ -42,7 +43,7 @@ const Player1 = () => {
                 showToast(`Send failed: ${err}`);
             }
         }
-        showToast(`Sending command: ${command}`);
+        showToast(`Command sent: ${command}`);
     };
 
     const sendCurrentCard2 = () => {
@@ -165,8 +166,10 @@ const Player1 = () => {
                     router.replace("/waiting");
                     break;
                 case "ban":
+                    router.replace("/waiting");
                     break;
                 case "hack":
+                    router.replace("/waiting");
                     break;
             }
             setInJunction(false);

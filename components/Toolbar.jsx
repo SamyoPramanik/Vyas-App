@@ -8,7 +8,7 @@ const Toolbar = () => {
         <View className="flex-row gap-4 items-end justify-end h-12">
             <TouchableOpacity
                 onPress={() => {
-                    // Handle back navigation
+                    router.push("/bluetooth");
                 }}
                 activeOpacity={0.5}
             >

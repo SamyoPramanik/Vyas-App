@@ -6,7 +6,7 @@ import Toolbar from "../components/Toolbar";
 import useSecureStorage from "../utils/store";
 import SingleCard from "../components/SingleCard";
 import { CameraView, useCameraPermissions } from "expo-camera";
-import { Button } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 
 const Player1 = () => {
     const store = useSecureStorage();
@@ -19,12 +19,29 @@ const Player1 = () => {
     const [currentCardId, setCurrentCardId] = useState(0);
     const [currentCard2Id, setCurrentCard2Id] = useState(0);
     const [inFinish, setInFinish] = useState(false);
+    const isFocused = useIsFocused();
+    const [cameraKey, setCameraKey] = useState(0);
+
+    // Force remount camera when screen gets focused
+    useEffect(() => {
+        if (isFocused) {
+            setCameraKey((prev) => prev + 1);
+        }
+    }, [isFocused]);
 
     const showToast = (message) => {
         ToastAndroid.show(message, ToastAndroid.SHORT);
     };
 
-    const sendCommand = (command) => {
+    const sendCommand = async (command) => {
+        if (store.connectedDevice && command) {
+            try {
+                await store.connectedDevice.write(command + "\n");
+                showToast(`Sent: ${command}`);
+            } catch (err) {
+                showToast(`Send failed: ${err}`);
+            }
+        }
         showToast(`Sending command: ${command}`);
     };
 
@@ -51,6 +68,9 @@ const Player1 = () => {
         else if (lastCard === "left") sendCommand(store.leftCommand);
         else if (lastCard === "right") sendCommand(store.rightCommand);
         else if (lastCard === "wild") sendRandomCommand();
+
+        store.setPlayerToMove("player2");
+        router.replace("/waiting");
     };
 
     const sendLastCard = () => {
@@ -60,6 +80,9 @@ const Player1 = () => {
         else if (lastCard === "left") sendCommand(store.leftCommand);
         else if (lastCard === "right") sendCommand(store.rightCommand);
         else if (lastCard === "wild") sendRandomCommand();
+
+        store.setPlayerToMove("player2");
+        router.replace("/waiting");
     };
 
     const sendRandomCommand = () => {
@@ -83,6 +106,11 @@ const Player1 = () => {
         setCurrentCard2("");
         setCurrentCardId(4);
         setCurrentCard2Id(4);
+        setInJunction(false);
+
+        if (!permission?.granted) {
+            requestPermission();
+        }
     }, []);
 
     useEffect(() => {
@@ -90,27 +118,31 @@ const Player1 = () => {
     }, [store.cameraFacing]);
 
     useEffect(() => {
-        if (inJunction === true && store.playerToMove === "player1") {
+        if (
+            inJunction === true &&
+            store.inJunction === true &&
+            store.playerToMove === "player1"
+        ) {
             switch (currentCard) {
                 case "forward":
                     sendCommand(store.forwardCommand);
                     saveMoveAndChangePlayer("forward");
-                    router.replace("/player2");
+                    router.replace("/waiting");
                     break;
                 case "backward":
                     sendCommand(store.backwardCommand);
                     saveMoveAndChangePlayer("backward");
-                    router.replace("/player2");
+                    router.replace("/waiting");
                     break;
                 case "left":
                     sendCommand(store.leftCommand);
                     saveMoveAndChangePlayer("left");
-                    router.replace("/player2");
+                    router.replace("/waiting");
                     break;
                 case "right":
                     sendCommand(store.rightCommand);
                     saveMoveAndChangePlayer("right");
-                    router.replace("/player2");
+                    router.replace("/waiting");
                     break;
                 case "block":
                     sendCurrentCard2();
@@ -120,7 +152,7 @@ const Player1 = () => {
                 case "wild":
                     sendRandomCommand();
                     saveMoveAndChangePlayer("wild");
-                    router.replace("/player2");
+                    router.replace("/waiting");
                     break;
                 case "echo":
                     sendMyLastCard();
@@ -130,7 +162,7 @@ const Player1 = () => {
                     break;
                 case "skip":
                     store.setPlayerToMove("player2");
-                    router.replace("/player2");
+                    router.replace("/waiting");
                     break;
                 case "ban":
                     break;
@@ -138,12 +170,21 @@ const Player1 = () => {
                     break;
             }
             setInJunction(false);
+            store.setInJunction(false);
+            setCurrentCard("");
+            setCurrentCard2("");
+            setCurrentCardId(4);
+            setCurrentCard2Id(4);
         }
     }, [inJunction]);
 
     const handleQrCode = (data) => {
         if (parseInt(data) > 3) {
             showToast("Invalid card selected");
+            setCurrentCard("");
+            setCurrentCard2("");
+            setCurrentCardId(4);
+            setCurrentCard2Id(4);
             return;
         }
         const card = myCards[parseInt(data)];
@@ -162,11 +203,13 @@ const Player1 = () => {
         ) {
             setCurrentCard2(card);
             setCurrentCard2Id(parseInt(data));
+            setInJunction(true);
         } else {
             setCurrentCard(card);
             setCurrentCard2("");
             setCurrentCardId(parseInt(data));
             setCurrentCard2Id(4);
+            setInJunction(true);
         }
     };
 
@@ -196,34 +239,20 @@ const Player1 = () => {
                 ))}
             </View>
             <View className="flex-1">
-                {permission?.granted ? (
-                    <CameraView
-                        className="flex"
-                        facing={cameraFacing}
-                        barcodeScannerSettings={{
-                            barcodeTypes: ["qr"],
-                        }}
-                        onBarcodeScanned={({ data }) => {
-                            handleQrCode(data);
-                        }}
-                    >
-                        <View className="flex h-full"></View>
-                    </CameraView>
-                ) : (
-                    <TouchableOpacity>
-                        <Text
-                            className="text-lg text-blue-500"
-                            onPress={requestPermission}
-                        >
-                            Grant Camera Permission
-                        </Text>
-                    </TouchableOpacity>
-                )}
+                <CameraView
+                    className="flex"
+                    key={cameraKey}
+                    facing={cameraFacing}
+                    barcodeScannerSettings={{
+                        barcodeTypes: ["qr"],
+                    }}
+                    onBarcodeScanned={({ data }) => {
+                        handleQrCode(data);
+                    }}
+                >
+                    <View className="flex h-full"></View>
+                </CameraView>
             </View>
-            <Button
-                onPress={() => setInJunction(true)}
-                title="Set Junction True"
-            />
         </SafeAreaView>
     );
 };

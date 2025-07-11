@@ -52,6 +52,7 @@ const NamesPage = () => {
         store.setRecentMoves([]);
         store.setIsGameFinished(false);
         store.setWinner("");
+        store.setInJunction(false);
         (async () => {
             const forwardCommand =
                 (await SecureStore.getItemAsync("forwardCommand")) || "f";
@@ -113,7 +114,7 @@ const NamesPage = () => {
             store.player2CurrentCards.length > 0
         ) {
             showToast("Game starting...");
-            router.replace("/player1");
+            router.replace("/waiting");
         }
     };
 

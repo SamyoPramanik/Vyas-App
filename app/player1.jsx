@@ -149,6 +149,7 @@ const Player1 = () => {
                     sendCurrentCard2();
                     saveMoveAndChangePlayer("block");
                     store.setPlayerToMove("player1");
+                    router.replace("/waiting");
                     break;
                 case "wild":
                     sendRandomCommand();

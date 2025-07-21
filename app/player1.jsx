@@ -18,7 +18,6 @@ const Player1 = () => {
     const [inJunction, setInJunction] = useState(false);
     const [currentCardId, setCurrentCardId] = useState(0);
     const [currentCard2Id, setCurrentCard2Id] = useState(0);
-    const [inFinish, setInFinish] = useState(false);
     const isFocused = useIsFocused();
     const [cameraKey, setCameraKey] = useState(0);
 
@@ -218,44 +217,51 @@ const Player1 = () => {
     };
 
     return (
-        <SafeAreaView className="flex-1 p-6 box-border">
+        <SafeAreaView className="flex-1 px-2 box-border">
             <Stack.Screen
                 options={{
                     headerShown: false,
                 }}
             />
             <Toolbar />
-            <View className="flex h-12 items-center justify-center">
+            <View className="flex items-center">
                 <Text className="text-xl">
                     <Text className="font-bold">{`${store.player1Name}`}</Text>
                     {`'s turn`}
                 </Text>
             </View>
-            <View className="flex-row items-center justify-between">
-                {myCards.map((card, index) => (
+            <View className="flex flex-row justify-between">
+                <View className="flex w-1/5">
                     <SingleCard
-                        key={index}
-                        id={index + 1}
-                        name={card}
+                        id={1}
+                        name={"card"}
                         currentCard={currentCardId}
                         currentCard2={currentCard2Id}
                     />
-                ))}
-            </View>
-            <View className="flex-1">
-                <CameraView
-                    className="flex"
-                    key={cameraKey}
-                    facing={cameraFacing}
-                    barcodeScannerSettings={{
-                        barcodeTypes: ["qr"],
-                    }}
-                    onBarcodeScanned={({ data }) => {
-                        handleQrCode(data);
-                    }}
-                >
-                    <View className="flex h-full"></View>
-                </CameraView>
+                </View>
+                <View className="flex w-1/5">
+                    <SingleCard
+                        id={1}
+                        name={"card"}
+                        currentCard={currentCardId}
+                        currentCard2={currentCard2Id}
+                    />
+                </View>
+                <View className="flex w-1/2 h-5/6">
+                    <CameraView
+                        className="flex"
+                        key={cameraKey}
+                        facing={cameraFacing}
+                        barcodeScannerSettings={{
+                            barcodeTypes: ["qr"],
+                        }}
+                        onBarcodeScanned={({ data }) => {
+                            handleQrCode(data);
+                        }}
+                    >
+                        <View className="flex h-full"></View>
+                    </CameraView>
+                </View>
             </View>
         </SafeAreaView>
     );

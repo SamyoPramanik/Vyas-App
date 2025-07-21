@@ -12,7 +12,7 @@ const SingleCard = ({ id, name, currentCard, currentCard2 }) => {
         return "bg-sky-200";
     };
     return (
-        <View className="flex w-1/4 p-1 items-center justify-center">
+        <View className="flex w-full p-1 items-center justify-center">
             <View
                 className={`flex items-center justify-center ${setCardColor()} rounded-xl w-full h-60 mb-2`}
             >

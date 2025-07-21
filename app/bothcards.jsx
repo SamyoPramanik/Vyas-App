@@ -21,51 +21,53 @@ const CardsPage = () => {
     };
 
     return (
-        <SafeAreaView className="flex-1 px-6 box-border w-full">
+        <SafeAreaView className="flex-1 px-2 box-border w-full h-full">
             <Stack.Screen
                 options={{
                     headerShown: false,
                 }}
             />
             <Toolbar />
-            <View className="flex-1 w-full gap-4 items-center justify-center">
-                <View className="flex flex-row items-center justify-center">
-                    <View className="flex w-1/2 items-center justify-center">
-                        <View className="flex items-center justify-center">
+            <View className="flex w-full gap-2">
+                <View className="flex flex-row">
+                    <View className="flex w-1/2">
+                        <View className="flex w-full items-center">
                             <Text className="text-xl">
                                 <Text className="font-bold">{`${store.player1Name}`}</Text>
                                 {` cards`}
                             </Text>
                         </View>
-                        <View className="flex-row items-center justify-between">
+                        <View className="flex-row w-full">
                             {player1Cards.map((card, index) => (
-                                <SingleCard
-                                    key={index}
-                                    id={index + 1}
-                                    name={card}
-                                    currentCard={10}
-                                    currentCard2={10}
-                                />
+                                <View key={index} className="flex w-1/4">
+                                    <SingleCard
+                                        id={index + 1}
+                                        name={card}
+                                        currentCard={10}
+                                        currentCard2={10}
+                                    />
+                                </View>
                             ))}
                         </View>
                     </View>
-                    <View className="bg-slate-300 w-[1px] h-full"></View>
-                    <View className="flex w-1/2 items-center justify-center">
-                        <View className="flex items-center justify-center">
+                    <View className="bg-slate-300 w-[1px]"></View>
+                    <View className="flex w-1/2">
+                        <View className="flex w-full items-center">
                             <Text className="text-xl">
-                                <Text className="font-bold">{`${store.player2Name}`}</Text>
+                                <Text className="font-bold">{`${store.player1Name}`}</Text>
                                 {` cards`}
                             </Text>
                         </View>
-                        <View className="flex-row items-center justify-between">
-                            {player2Cards.map((card, index) => (
-                                <SingleCard
-                                    key={index}
-                                    id={index + 1}
-                                    name={card}
-                                    currentCard={10}
-                                    currentCard2={10}
-                                />
+                        <View className="flex-row w-full">
+                            {player1Cards.map((card, index) => (
+                                <View key={index} className="flex w-1/4">
+                                    <SingleCard
+                                        id={index + 1}
+                                        name={card}
+                                        currentCard={10}
+                                        currentCard2={10}
+                                    />
+                                </View>
                             ))}
                         </View>
                     </View>

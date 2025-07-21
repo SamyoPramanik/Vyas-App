@@ -6,6 +6,6 @@ export const randomActionCard = () => {
 };
 
 export const randomPowerCard = () => {
-    const idx = (Math.floor(Math.random() * 1009) % 7) + 4;
+    const idx = Math.floor(Math.random() * 1009) % 7;
     return powerCards[idx];
 };

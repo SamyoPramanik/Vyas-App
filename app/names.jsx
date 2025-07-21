@@ -102,14 +102,14 @@ const NamesPage = () => {
     };
 
     return (
-        <SafeAreaView className="flex-1 p-6 box-border">
+        <SafeAreaView className="flex-1 px-6 box-border">
             <Stack.Screen
                 options={{
                     headerShown: false,
                 }}
             />
             <Toolbar />
-            <View className="flex gap-10 mt-10">
+            <View className="flex gap-1">
                 <View className="items-center p-1">
                     <Text className="text-6xl font-bold">Vyas</Text>
                 </View>

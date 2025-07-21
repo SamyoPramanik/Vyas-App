@@ -4,6 +4,7 @@ import {
     TextInput,
     TouchableOpacity,
     ToastAndroid,
+    ScrollView,
 } from "react-native";
 import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -120,7 +121,7 @@ const SettingsPage = () => {
                     title: "Settings",
                 }}
             />
-            <View className="flex gap-1">
+            <ScrollView className="flex gap-1 -mt-4">
                 <View className="flex gap-1">
                     <Text className="font-bold">Forward Command</Text>
                     <TextInput
@@ -213,7 +214,7 @@ const SettingsPage = () => {
                         </Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </ScrollView>
         </SafeAreaView>
     );
 };

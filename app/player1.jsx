@@ -32,72 +32,6 @@ const Player1 = () => {
         ToastAndroid.show(message, ToastAndroid.SHORT);
     };
 
-    const sendCommand = async (command) => {
-        showToast(`Sending command: ${command}`);
-        if (store.connectedDevice && command) {
-            try {
-                await store.connectedDevice.write(command + "\n");
-                showToast(`Sent: ${command}`);
-            } catch (err) {
-                showToast(`Send failed: ${err}`);
-            }
-        }
-        showToast(`Command sent: ${command}`);
-    };
-
-    const sendCurrentCard2 = () => {
-        if (currentCard2 === "forward") sendCommand(store.forwardCommand);
-        else if (currentCard2 === "backward")
-            sendCommand(store.backwardCommand);
-        else if (currentCard2 === "left") sendCommand(store.leftCommand);
-        else if (currentCard2 === "right") sendCommand(store.rightCommand);
-    };
-
-    const saveMoveAndChangePlayer = (move) => {
-        store.setPlayer1Moves((prev) => [...prev, move]);
-        store.setRecentMoves((prev) => [...prev, move]);
-        store.setPlayerToMove("player2");
-        setCurrentCard("");
-        setCurrentCard2("");
-    };
-
-    const sendMyLastCard = () => {
-        const lastCard = store.player1Moves[store.player1Moves.length - 1];
-        if (lastCard === "forward") sendCommand(store.forwardCommand);
-        else if (lastCard === "backward") sendCommand(store.backwardCommand);
-        else if (lastCard === "left") sendCommand(store.leftCommand);
-        else if (lastCard === "right") sendCommand(store.rightCommand);
-        else if (lastCard === "wild") sendRandomCommand();
-
-        store.setPlayerToMove("player2");
-        router.replace("/waiting");
-    };
-
-    const sendLastCard = () => {
-        const lastCard = store.player2Moves[store.player2Moves.length - 1];
-        if (lastCard === "forward") sendCommand(store.forwardCommand);
-        else if (lastCard === "backward") sendCommand(store.backwardCommand);
-        else if (lastCard === "left") sendCommand(store.leftCommand);
-        else if (lastCard === "right") sendCommand(store.rightCommand);
-        else if (lastCard === "wild") sendRandomCommand();
-
-        store.setPlayerToMove("player2");
-        router.replace("/waiting");
-    };
-
-    const sendRandomCommand = () => {
-        const randomIndex = Math.floor(Math.random() * 1000) % 4;
-        if (randomIndex === 0) {
-            sendCommand(store.forwardCommand);
-        } else if (randomIndex === 1) {
-            sendCommand(store.backwardCommand);
-        } else if (randomIndex === 2) {
-            sendCommand(store.leftCommand);
-        } else if (randomIndex === 3) {
-            sendCommand(store.rightCommand);
-        }
-    };
-
     useEffect(() => {
         // Set myCards from store
         setMyCards(store.player1CurrentCards || []);
@@ -119,65 +53,15 @@ const Player1 = () => {
 
     useEffect(() => {
         if (
-            inJunction === true &&
-            store.inJunction === true &&
+            inJunction &&
+            store.inJunction &&
             store.playerToMove === "player1"
         ) {
-            switch (currentCard) {
-                case "forward":
-                    sendCommand(store.forwardCommand);
-                    saveMoveAndChangePlayer("forward");
-                    router.replace("/waiting");
-                    break;
-                case "backward":
-                    sendCommand(store.backwardCommand);
-                    saveMoveAndChangePlayer("backward");
-                    router.replace("/waiting");
-                    break;
-                case "left":
-                    sendCommand(store.leftCommand);
-                    saveMoveAndChangePlayer("left");
-                    router.replace("/waiting");
-                    break;
-                case "right":
-                    sendCommand(store.rightCommand);
-                    saveMoveAndChangePlayer("right");
-                    router.replace("/waiting");
-                    break;
-                case "block":
-                    sendCurrentCard2();
-                    saveMoveAndChangePlayer("block");
-                    store.setPlayerToMove("player1");
-                    router.replace("/waiting");
-                    break;
-                case "wild":
-                    sendRandomCommand();
-                    saveMoveAndChangePlayer("wild");
-                    router.replace("/waiting");
-                    break;
-                case "echo":
-                    sendMyLastCard();
-                    break;
-                case "copycat":
-                    sendLastCard();
-                    break;
-                case "skip":
-                    store.setPlayerToMove("player2");
-                    router.replace("/waiting");
-                    break;
-                case "ban":
-                    router.replace("/waiting");
-                    break;
-                case "hack":
-                    router.replace("/waiting");
-                    break;
-            }
-            setInJunction(false);
-            store.setInJunction(false);
-            setCurrentCard("");
-            setCurrentCard2("");
-            setCurrentCardId(4);
-            setCurrentCard2Id(4);
+            store.setCurrentCard(currentCard);
+            store.setCurrentCard2(currentCard2);
+            store.setCurrentCardId(currentCardId);
+            store.setCurrentCard2Id(currentCard2Id);
+            router.replace("/player1newcard");
         }
     }, [inJunction]);
 
@@ -198,7 +82,7 @@ const Player1 = () => {
         }
 
         if (
-            currentCard === "block" &&
+            (currentCard === "block" || currentCard === "ban") &&
             (card === "forward" ||
                 card === "backward" ||
                 card === "left" ||
@@ -231,22 +115,29 @@ const Player1 = () => {
                 </Text>
             </View>
             <View className="flex flex-row justify-between">
-                <View className="flex w-1/5">
-                    <SingleCard
-                        id={1}
-                        name={"card"}
-                        currentCard={currentCardId}
-                        currentCard2={currentCard2Id}
-                    />
-                </View>
-                <View className="flex w-1/5">
-                    <SingleCard
-                        id={1}
-                        name={"card"}
-                        currentCard={currentCardId}
-                        currentCard2={currentCard2Id}
-                    />
-                </View>
+                {currentCardId < 4 && (
+                    <View className="flex w-1/5">
+                        <SingleCard
+                            id={currentCardId + 1}
+                            name={myCards[currentCardId]}
+                            currentCard={currentCardId}
+                            currentCard2={currentCard2Id}
+                        />
+                    </View>
+                )}
+                {currentCard2Id < 4 && (
+                    <View className="flex w-1/5">
+                        <SingleCard
+                            id={currentCard2Id + 1}
+                            name={myCards[currentCard2Id]}
+                            currentCard={currentCardId}
+                            currentCard2={currentCard2Id}
+                        />
+                    </View>
+                )}
+                {currentCardId >= 4 && currentCard2Id >= 4 && (
+                    <View className="flex w-1/5"></View>
+                )}
                 <View className="flex w-1/2 h-5/6">
                     <CameraView
                         className="flex"

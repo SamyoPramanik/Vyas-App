@@ -54,12 +54,12 @@ const CardsPage = () => {
                     <View className="flex w-1/2">
                         <View className="flex w-full items-center">
                             <Text className="text-xl">
-                                <Text className="font-bold">{`${store.player1Name}`}</Text>
+                                <Text className="font-bold">{`${store.player2Name}`}</Text>
                                 {` cards`}
                             </Text>
                         </View>
                         <View className="flex-row w-full">
-                            {player1Cards.map((card, index) => (
+                            {player2Cards.map((card, index) => (
                                 <View key={index} className="flex w-1/4">
                                     <SingleCard
                                         id={index + 1}

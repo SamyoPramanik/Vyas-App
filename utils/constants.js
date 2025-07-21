@@ -8,3 +8,9 @@ export const powerCards = [
     "ban",
     "hack",
 ];
+
+export const allowedMoves = [
+    ["forward", "backward"],
+    ["left", "right"],
+    ["forward", "left"],
+];

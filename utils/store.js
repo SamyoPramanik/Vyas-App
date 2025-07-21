@@ -21,6 +21,10 @@ const useSecureStorage = create((set) => ({
     cameraFacing: "back",
     inJunction: false,
     currentJunction: 0,
+    currentCard: "",
+    currentCard2: "",
+    currentCardId: 40,
+    currentCard2Id: 40,
     setPlayer1Moves: (moves) => set({ player1Moves: moves }),
     setPlayer2Moves: (moves) => set({ player2Moves: moves }),
     setPlayer1Name: (name) => set({ player1Name: name }),
@@ -41,6 +45,10 @@ const useSecureStorage = create((set) => ({
     setCameraFacing: (facing) => set({ cameraFacing: facing }),
     setInJunction: (inJunction) => set({ inJunction }),
     setCurrentJunction: (junction) => set({ currentJunction: junction }),
+    setCurrentCard: (card) => set({ currentCard: card }),
+    setCurrentCard2: (card) => set({ currentCard2: card }),
+    setCurrentCardId: (id) => set({ currentCardId: id }),
+    setCurrentCard2Id: (id) => set({ currentCard2Id: id }),
 
     resetStore: () =>
         set({

@@ -6,7 +6,6 @@ const useSecureStorage = create((set) => ({
     player1Name: "",
     player2Name: "",
     connectedDevice: null,
-    availableCards: [],
     player1CurrentCards: [],
     player2CurrentCards: [],
     recentMoves: [],
@@ -21,12 +20,12 @@ const useSecureStorage = create((set) => ({
     playerToMove: "player1",
     cameraFacing: "back",
     inJunction: false,
+    currentJunction: 0,
     setPlayer1Moves: (moves) => set({ player1Moves: moves }),
     setPlayer2Moves: (moves) => set({ player2Moves: moves }),
     setPlayer1Name: (name) => set({ player1Name: name }),
     setPlayer2Name: (name) => set({ player2Name: name }),
     setConnectedDevice: (device) => set({ connectedDevice: device }),
-    setAvailableCards: (cards) => set({ availableCards: cards }),
     setPlayer1CurrentCards: (cards) => set({ player1CurrentCards: cards }),
     setPlayer2CurrentCards: (cards) => set({ player2CurrentCards: cards }),
     setIsGameFinished: (isFinished) => set({ isGameFinished: isFinished }),
@@ -41,6 +40,7 @@ const useSecureStorage = create((set) => ({
     setPlayerToMove: (player) => set({ playerToMove: player }),
     setCameraFacing: (facing) => set({ cameraFacing: facing }),
     setInJunction: (inJunction) => set({ inJunction }),
+    setCurrentJunction: (junction) => set({ currentJunction: junction }),
 
     resetStore: () =>
         set({

@@ -6,44 +6,47 @@ import useSecureStorage from "../utils/store";
 import { router, Stack } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import Toolbar from "../components/Toolbar";
+import { randomActionCard, randomPowerCard } from "../utils/functions";
 
 const NamesPage = () => {
     const [player1Name, setPlayer1Name] = useState("");
     const [player2Name, setPlayer2Name] = useState("");
-    const [cards, setCards] = useState([]);
+    const [initialized, setInitialized] = useState(false);
     const store = useSecureStorage();
 
     const showToast = useCallback((message) => {
         ToastAndroid.show(message, ToastAndroid.SHORT);
     }, []);
 
+    useEffect(() => {
+        if (initialized) {
+            showToast("Game starting...");
+            router.replace("/bothcards");
+        }
+    }, [initialized]);
+
     const distributeCards = () => {
         // Clear existing cards first
         store.setPlayer1CurrentCards([]);
         store.setPlayer2CurrentCards([]);
 
-        const availableCards = store.availableCards;
         const player1Cards = [];
         const player2Cards = [];
         for (let i = 0; i < 2; i++) {
-            const idx1 = Math.floor(Math.random() * 1000) % 4;
-            const idx2 = Math.floor(Math.random() * 1000) % 4;
-            const card1 = availableCards[idx1];
-            const card2 = availableCards[idx2];
+            const card1 = randomActionCard();
+            const card2 = randomActionCard();
             player1Cards.push(card1);
             player2Cards.push(card2);
         }
         for (let i = 0; i < 2; i++) {
-            const idx1 = (Math.floor(Math.random() * 1000) % 7) + 4;
-            const idx2 = (Math.floor(Math.random() * 1000) % 7) + 4;
-            const card1 = availableCards[idx1];
-            const card2 = availableCards[idx2];
+            const card1 = randomPowerCard();
+            const card2 = randomPowerCard();
             player1Cards.push(card1);
             player2Cards.push(card2);
         }
         store.setPlayer1CurrentCards((prev) => player1Cards);
         store.setPlayer2CurrentCards((prev) => player2Cards);
-        setCards(store.player1CurrentCards);
+        setInitialized(true);
     };
 
     const initializeGame = () => {
@@ -53,6 +56,7 @@ const NamesPage = () => {
         store.setIsGameFinished(false);
         store.setWinner("");
         store.setInJunction(false);
+        store.setCurrentJunction(0);
         (async () => {
             const forwardCommand =
                 (await SecureStore.getItemAsync("forwardCommand")) || "f";
@@ -92,30 +96,9 @@ const NamesPage = () => {
         }
         store.setPlayer1Name(player1Name);
         store.setPlayer2Name(player2Name);
-        store.setAvailableCards([
-            "forward",
-            "backward",
-            "left",
-            "right",
-            "block",
-            "skip",
-            "ban",
-            "wild",
-            "hack",
-            "echo",
-            "copycat",
-        ]);
 
         distributeCards();
         initializeGame();
-
-        if (
-            store.player1CurrentCards.length > 0 &&
-            store.player2CurrentCards.length > 0
-        ) {
-            showToast("Game starting...");
-            router.replace("/waiting");
-        }
     };
 
     return (
@@ -157,15 +140,6 @@ const NamesPage = () => {
                         <Text className="text-white font-bold">Start Game</Text>
                     </TouchableOpacity>
                 </View>
-                {cards.length > 0 && (
-                    <View className="flex gap-2">
-                        {cards.map((card, index) => (
-                            <Text key={index} className="text-lg font-semibold">
-                                {card}
-                            </Text>
-                        ))}
-                    </View>
-                )}
             </View>
         </SafeAreaView>
     );

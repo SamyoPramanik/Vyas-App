@@ -10,7 +10,15 @@ import { useIsFocused } from "@react-navigation/native";
 import Player from "../components/Player";
 
 const Player1 = () => {
+    const isFocused = useIsFocused();
+    const [cameraKey, setCameraKey] = useState(0);
     const store = useSecureStorage();
+    // Force remount camera when screen gets focused
+    useEffect(() => {
+        if (isFocused) {
+            setCameraKey((prev) => prev + 1);
+        }
+    }, [isFocused]);
     return (
         <SafeAreaView className="flex-1 px-2 box-border">
             <Stack.Screen
@@ -24,6 +32,7 @@ const Player1 = () => {
                 playerName={store.player1Name}
                 playerToMove={"player1"}
                 playerNewCardRoute="/player1newcard"
+                cameraKey={cameraKey}
             />
         </SafeAreaView>
     );

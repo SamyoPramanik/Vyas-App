@@ -51,6 +51,18 @@ const useSecureStorage = create((set, get) => ({
     setCurrentCard2Id: (id) => set({ currentCard2Id: id }),
     getPlayer1CurrentCards: () => get().player1CurrentCards,
     getPlayer2CurrentCards: () => get().player2CurrentCards,
+    addRecentMove: (move) =>
+        set((state) => ({
+            recentMoves: [...state.recentMoves, move],
+        })),
+    addPlayer1Move: (move) =>
+        set((state) => ({
+            player1Moves: [...state.player1Moves, move],
+        })),
+    addPlayer2Move: (move) =>
+        set((state) => ({
+            player2Moves: [...state.player2Moves, move],
+        })),
 
     resetStore: () =>
         set({

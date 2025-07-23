@@ -11,6 +11,7 @@ const Player = ({
     playerName,
     playerToMove,
     playerNewCardRoute,
+    cameraKey,
 }) => {
     const store = useSecureStorage();
     const [myCards, setMyCards] = useState([]);
@@ -21,15 +22,6 @@ const Player = ({
     const [inJunction, setInJunction] = useState(false);
     const [currentCardId, setCurrentCardId] = useState(0);
     const [currentCard2Id, setCurrentCard2Id] = useState(0);
-    const isFocused = useIsFocused();
-    const [cameraKey, setCameraKey] = useState(0);
-
-    // Force remount camera when screen gets focused
-    useEffect(() => {
-        if (isFocused) {
-            setCameraKey((prev) => prev + 1);
-        }
-    }, [isFocused]);
 
     const showToast = (message) => {
         ToastAndroid.show(message, ToastAndroid.SHORT);

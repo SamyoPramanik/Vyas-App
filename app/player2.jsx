@@ -11,6 +11,14 @@ import Player from "../components/Player";
 
 const Player2 = () => {
     const store = useSecureStorage();
+    const isFocused = useIsFocused();
+    const [cameraKey, setCameraKey] = useState(0);
+    // Force remount camera when screen gets focused
+    useEffect(() => {
+        if (isFocused) {
+            setCameraKey((prev) => prev + 1);
+        }
+    }, [isFocused]);
     return (
         <SafeAreaView className="flex-1 px-2 box-border">
             <Stack.Screen
@@ -24,6 +32,7 @@ const Player2 = () => {
                 playerName={store.player2Name}
                 playerToMove={"player2"}
                 playerNewCardRoute="/player2newcard"
+                cameraKey={cameraKey}
             />
         </SafeAreaView>
     );

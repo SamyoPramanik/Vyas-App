@@ -30,6 +30,8 @@ const PlayerNewCard = ({
     const [action, setAction] = useState("");
     const [currentCardId, setCurrentCardId] = useState(4);
     const [currentCard2Id, setCurrentCard2Id] = useState(4);
+    const [currentCard, setCurrentCard] = useState(store.currentCard || "");
+    const [currentCard2, setCurrentCard2] = useState(store.currentCard2 || "");
 
     const showToast = (message) => {
         ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -50,15 +52,20 @@ const PlayerNewCard = ({
     useEffect(() => {
         const currentCard = store.currentCard;
         const currentCard2 = store.currentCard2;
+        setCurrentCard(currentCard);
+        setCurrentCard2(currentCard2);
         setCurrentCard2Id(store.currentCard2Id);
         setCurrentCardId(store.currentCardId);
         let tempaction = "";
 
         if (currentCard !== "hack")
             tempaction = findAction(player, currentCard, currentCard2);
+        else tempaction = "forward";
         if (!isValidMove(tempaction)) {
             showToast("Invalid move, please select a valid card.");
-            router.replace(playerRoute);
+            setTimeout(() => {
+                router.replace(playerRoute); // back to camera screen
+            }, 300); // 200–300ms gives time for focus lifecycle to catch up
             return;
         }
         setAction(tempaction);
@@ -67,38 +74,19 @@ const PlayerNewCard = ({
 
     useEffect(() => {
         if (validAction) {
-            const currentCard = store.currentCard;
             const card1 = genNewCard(currentCard);
             setNewCard1(card1);
 
             const updated = playerCurrentCards;
             updated[currentCardId] = card1;
 
-            if (
-                currentCard === "forward" ||
-                currentCard === "backward" ||
-                currentCard === "left" ||
-                currentCard === "right"
-            ) {
-                updateMyMoves(card1);
-                const recentMoves = store.recentMoves;
-                store.setRecentMoves([...recentMoves, card1]);
-            }
-
             if (currentCard === "block" || currentCard === "ban") {
                 const card2 = randomActionCard();
-                const recentMoves = store.recentMoves;
-                store.setRecentMoves([...recentMoves, card2]);
-                updateMyMoves(card2);
                 setNewCard2(card2);
                 updated[currentCard2Id] = card2;
             }
 
             setPlayerCurrentCards(updated);
-            store.setCurrentCard("");
-            store.setCurrentCard2("");
-            store.setCurrentCardId(4);
-            store.setCurrentCard2Id(4);
         }
     }, [validAction]);
 
@@ -117,7 +105,6 @@ const PlayerNewCard = ({
     const confirmMove = async () => {
         const command = await getCommand(action);
 
-        const currentCard = store.currentCard;
         if (currentCard !== "block") {
             store.setPlayerToMove(otherPlayer);
         }
@@ -139,6 +126,11 @@ const PlayerNewCard = ({
             store.setCurrentCard2Id(4);
             router.replace(otherPlayerRoute);
         }
+
+        store.setCurrentCard("");
+        store.setCurrentCard2("");
+        store.setCurrentCardId(4);
+        store.setCurrentCard2Id(4);
     };
 
     return (

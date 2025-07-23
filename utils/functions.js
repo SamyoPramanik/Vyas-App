@@ -16,22 +16,61 @@ export const isValidMove = (move) => {
     return true;
 };
 
-const store = useSecureStorage.getState();
-
 export const findAction = (player, card1, card2) => {
+    const store = useSecureStorage.getState();
+    // if(card1 === "hack")
     if (card1 === "block" || card1 === "ban") {
+        store.addRecentMove(card2);
+        if (player === "player1") {
+            useSecureStorage
+                .getState()
+                .setPlayer1Moves((prev) => [...prev, card2]);
+        }
+        if (player === "player2") {
+            useSecureStorage
+                .getState()
+                .setPlayer2Moves((prev) => [...prev, card2]);
+        }
         return card2;
     }
     if (card1 === "forward") {
+        store.addRecentMove(card1);
+        if (player === "player1") {
+            store.addPlayer1Move(card1);
+        }
+        if (player === "player2") {
+            store.addPlayer2Move(card1);
+        }
         return "forward";
     }
     if (card1 === "backward") {
+        store.addRecentMove(card1);
+        if (player === "player1") {
+            store.addPlayer1Move(card1);
+        }
+        if (player === "player2") {
+            store.addPlayer2Move(card1);
+        }
         return "backward";
     }
     if (card1 === "left") {
+        store.addRecentMove(card1);
+        if (player === "player1") {
+            store.addPlayer1Move(card1);
+        }
+        if (player === "player2") {
+            store.addPlayer2Move(card1);
+        }
         return "left";
     }
     if (card1 === "right") {
+        store.addRecentMove(card1);
+        if (player === "player1") {
+            store.addPlayer1Move(card1);
+        }
+        if (player === "player2") {
+            store.addPlayer2Move(card1);
+        }
         return "right";
     }
     if (card1 === "wild") {
@@ -39,24 +78,29 @@ export const findAction = (player, card1, card2) => {
         return action;
     }
     if (card1 === "echo") {
-        if (player === "player1") {
-            if (store.player1Moves.length === 0) {
-                return "";
+        try {
+            if (player === "player1") {
+                return store.player1Moves[store.player1Moves.length - 1];
             }
-            return store.player1Moves[store.player1Moves.length - 1];
-        }
-        if (player === "player2") {
-            if (store.player2Moves.length === 0) {
-                return "";
+            if (player === "player2") {
+                return store.player2Moves[store.player2Moves.length - 1];
             }
-            return store.player2Moves[store.player2Moves.length - 1];
+        } catch (error) {
+            console.error("Error in echo card logic:", error);
+            return "";
         }
     }
     if (card1 === "copycat") {
-        if (store.recentMoves.length === 0) {
+        console.log(`size: ${store.recentMoves.length}`);
+        // if (store.recentMoves.length === 0) {
+        //     return "";
+        // }
+        try {
+            return store.recentMoves[store.recentMoves.length - 1];
+        } catch (error) {
+            console.error("Error in copycat card logic:", error);
             return "";
         }
-        return store.recentMoves[store.recentMoves.length - 1];
     }
 };
 

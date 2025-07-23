@@ -18,8 +18,7 @@ const Player2NewCard = () => {
     };
 
     const updateMyMoves = (card) => {
-        const player2Moves = store.player2Moves;
-        store.setPlayer2Moves([...player2Moves, card]);
+        store.setPlayer2Moves((prev) => [...prev, card]);
     };
 
     useEffect(() => {

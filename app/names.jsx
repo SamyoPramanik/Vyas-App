@@ -39,8 +39,10 @@ const NamesPage = () => {
             player2Cards.push(card2);
         }
         for (let i = 0; i < 2; i++) {
-            const card1 = randomPowerCard();
-            const card2 = randomPowerCard();
+            // const card1 = randomPowerCard();
+            // const card2 = randomPowerCard();
+            const card1 = "wild";
+            const card2 = "ban";
             player1Cards.push(card1);
             player2Cards.push(card2);
         }

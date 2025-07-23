@@ -7,24 +7,24 @@ import useSecureStorage from "../utils/store";
 
 import PlayerNewCard from "../components/PlayerNewCard";
 
-const Player1NewCard = () => {
+const Player2NewCard = () => {
     const store = useSecureStorage();
     const [currentCards, setCurrentCards] = useState(
-        store.getPlayer1CurrentCards()
+        store.getPlayer2CurrentCards()
     );
 
     const updateCurrentCards = (cards) => {
-        store.setPlayer1CurrentCards(cards);
+        store.setPlayer2CurrentCards(cards);
     };
 
     const updateMyMoves = (card) => {
-        const player1Moves = store.player1Moves;
-        store.setPlayer1Moves([...player1Moves, card]);
+        const player2Moves = store.player2Moves;
+        store.setPlayer2Moves([...player2Moves, card]);
     };
 
     useEffect(() => {
         const fetchCards = async () => {
-            const cards = await store.getPlayer1CurrentCards();
+            const cards = await store.getPlayer2CurrentCards();
             setCurrentCards(cards);
         };
         fetchCards();
@@ -38,11 +38,11 @@ const Player1NewCard = () => {
             />
             <Toolbar />
             <PlayerNewCard
-                player="player1"
-                playerName={store.player1Name}
-                otherPlayer="player2"
-                playerRoute="/player1"
-                otherPlayerRoute="/player2"
+                player="player2"
+                playerName={store.player2Name}
+                otherPlayer="player1"
+                playerRoute="/player2"
+                otherPlayerRoute="/player1"
                 playerCurrentCards={currentCards}
                 setPlayerCurrentCards={updateCurrentCards}
                 updateMyMoves={updateMyMoves}
@@ -51,4 +51,4 @@ const Player1NewCard = () => {
     );
 };
 
-export default Player1NewCard;
+export default Player2NewCard;

@@ -12,6 +12,7 @@ export const randomPowerCard = () => {
 };
 
 export const isValidMove = (move) => {
+    if (move === "") return false;
     return true;
 };
 
@@ -39,13 +40,22 @@ export const findAction = (player, card1, card2) => {
     }
     if (card1 === "echo") {
         if (player === "player1") {
+            if (store.player1Moves.length === 0) {
+                return "";
+            }
             return store.player1Moves[store.player1Moves.length - 1];
         }
         if (player === "player2") {
+            if (store.player2Moves.length === 0) {
+                return "";
+            }
             return store.player2Moves[store.player2Moves.length - 1];
         }
     }
     if (card1 === "copycat") {
+        if (store.recentMoves.length === 0) {
+            return "";
+        }
         return store.recentMoves[store.recentMoves.length - 1];
     }
 };

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-const useSecureStorage = create((set) => ({
+const useSecureStorage = create((set, get) => ({
     player1Moves: [],
     player2Moves: [],
     player1Name: "",
@@ -49,6 +49,8 @@ const useSecureStorage = create((set) => ({
     setCurrentCard2: (card) => set({ currentCard2: card }),
     setCurrentCardId: (id) => set({ currentCardId: id }),
     setCurrentCard2Id: (id) => set({ currentCard2Id: id }),
+    getPlayer1CurrentCards: () => get().player1CurrentCards,
+    getPlayer2CurrentCards: () => get().player2CurrentCards,
 
     resetStore: () =>
         set({
@@ -57,8 +59,6 @@ const useSecureStorage = create((set) => ({
             player1Name: "",
             player2Name: "",
             connectedDevice: null,
-            availableCards: [],
-            cards: [],
         }),
 }));
 

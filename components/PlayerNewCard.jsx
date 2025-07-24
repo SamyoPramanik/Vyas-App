@@ -6,6 +6,7 @@ import Toolbar from "../components/Toolbar";
 import useSecureStorage from "../utils/store";
 import SingleCard from "../components/SingleCard";
 import {
+    addAction,
     findAction,
     genNewCard,
     isValidMove,
@@ -68,6 +69,7 @@ const PlayerNewCard = ({
             }, 300); // 200–300ms gives time for focus lifecycle to catch up
             return;
         }
+        addAction(player, currentCard, currentCard2);
         setAction(tempaction);
         setValidAction(true);
     }, []);

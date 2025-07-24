@@ -7,70 +7,36 @@ export const randomActionCard = () => {
 };
 
 export const randomPowerCard = () => {
-    const idx = Math.floor(Math.random() * 1009) % 7;
+    const idx = Math.floor(Math.random() * 1009) % 6;
     return powerCards[idx];
 };
 
 export const isValidMove = (move) => {
+    const store = useSecureStorage.getState();
+    if (store.bannedCard === move) {
+        console.log("You cannot use this card, it is banned.");
+        return false;
+    }
     if (move === "") return false;
+    store.setBannedCard("");
     return true;
 };
 
 export const findAction = (player, card1, card2) => {
     const store = useSecureStorage.getState();
-    // if(card1 === "hack")
     if (card1 === "block" || card1 === "ban") {
-        store.addRecentMove(card2);
-        if (player === "player1") {
-            useSecureStorage
-                .getState()
-                .setPlayer1Moves((prev) => [...prev, card2]);
-        }
-        if (player === "player2") {
-            useSecureStorage
-                .getState()
-                .setPlayer2Moves((prev) => [...prev, card2]);
-        }
         return card2;
     }
     if (card1 === "forward") {
-        store.addRecentMove(card1);
-        if (player === "player1") {
-            store.addPlayer1Move(card1);
-        }
-        if (player === "player2") {
-            store.addPlayer2Move(card1);
-        }
         return "forward";
     }
     if (card1 === "backward") {
-        store.addRecentMove(card1);
-        if (player === "player1") {
-            store.addPlayer1Move(card1);
-        }
-        if (player === "player2") {
-            store.addPlayer2Move(card1);
-        }
         return "backward";
     }
     if (card1 === "left") {
-        store.addRecentMove(card1);
-        if (player === "player1") {
-            store.addPlayer1Move(card1);
-        }
-        if (player === "player2") {
-            store.addPlayer2Move(card1);
-        }
         return "left";
     }
     if (card1 === "right") {
-        store.addRecentMove(card1);
-        if (player === "player1") {
-            store.addPlayer1Move(card1);
-        }
-        if (player === "player2") {
-            store.addPlayer2Move(card1);
-        }
         return "right";
     }
     if (card1 === "wild") {
@@ -86,19 +52,16 @@ export const findAction = (player, card1, card2) => {
                 return store.player2Moves[store.player2Moves.length - 1];
             }
         } catch (error) {
-            console.error("Error in echo card logic:", error);
+            console.error("You have no recent moves");
             return "";
         }
     }
     if (card1 === "copycat") {
         console.log(`size: ${store.recentMoves.length}`);
-        // if (store.recentMoves.length === 0) {
-        //     return "";
-        // }
         try {
             return store.recentMoves[store.recentMoves.length - 1];
         } catch (error) {
-            console.error("Error in copycat card logic:", error);
+            console.error("No recent moves found");
             return "";
         }
     }
@@ -124,5 +87,34 @@ export const genNewCard = (card1) => {
         card1 === "right"
     ) {
         return randomActionCard();
+    }
+};
+
+export const addAction = (player, card1, card2) => {
+    const store = useSecureStorage.getState();
+    store.addRecentMove(card1);
+    if (
+        card1 === "forward" ||
+        card1 === "backward" ||
+        card1 === "left" ||
+        card1 === "right"
+    ) {
+        if (player === "player1") {
+            store.addPlayer1Move(card1);
+        }
+        if (player === "player2") {
+            store.addPlayer2Move(card1);
+        }
+    } else if (card1 === "block" || card1 === "ban") {
+        if (player === "player1") {
+            store.addPlayer1Move(card2);
+        }
+        if (player === "player2") {
+            store.addPlayer2Move(card2);
+        }
+    }
+
+    if (card1 === "ban") {
+        store.setBannedCard(card2);
     }
 };

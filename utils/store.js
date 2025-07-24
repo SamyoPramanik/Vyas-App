@@ -26,6 +26,7 @@ const useSecureStorage = create((set, get) => ({
     currentCardId: 40,
     currentCard2Id: 40,
     cardVisible: false,
+    bannedCard: "",
     setPlayer1Moves: (moves) => set({ player1Moves: moves }),
     setPlayer2Moves: (moves) => set({ player2Moves: moves }),
     setPlayer1Name: (name) => set({ player1Name: name }),
@@ -53,6 +54,7 @@ const useSecureStorage = create((set, get) => ({
     getPlayer1CurrentCards: () => get().player1CurrentCards,
     getPlayer2CurrentCards: () => get().player2CurrentCards,
     setCardVisible: (visible) => set({ cardVisible: visible }),
+    setBannedCard: (card) => set({ bannedCard: card }),
     addRecentMove: (move) =>
         set((state) => ({
             recentMoves: [...state.recentMoves, move],

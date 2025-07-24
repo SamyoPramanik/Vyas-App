@@ -6,3 +6,9 @@ export const allowedMoves = [
     ["left", "right"],
     ["forward", "left"],
 ];
+
+export const nextJunction = [
+    { forward: 1, backward: 2 },
+    { left: 3, right: 4 },
+    { forward: 5, left: 6 },
+];

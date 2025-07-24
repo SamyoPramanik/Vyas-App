@@ -107,6 +107,8 @@ const NamesPage = () => {
         }
         store.setPlayer1Name(player1Name);
         store.setPlayer2Name(player2Name);
+        store.setIsGameFinished(false);
+        store.setWinner("");
 
         distributeCards();
         initializeGame();

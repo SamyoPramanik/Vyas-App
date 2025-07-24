@@ -8,10 +8,37 @@ import { Button } from "react-native";
 
 const WaitingPage = () => {
     const store = useSecureStorage();
+    const [device, setDevice] = useState(null);
 
     const showToast = (message) => {
         ToastAndroid.show(message, ToastAndroid.SHORT);
     };
+
+    const handleReceivedData = (data) => {
+        if (data === store.junctionCommand) {
+            store.setInJunction(true);
+            showToast("You have reached a junction!");
+        } else if (data === store.finishCommand) {
+            store.setIsGameFinished(true);
+        }
+    };
+
+    const listenForData = async (device) => {
+        device.onDataReceived((data) => {
+            console.log(`Received: ${data.data}`);
+            handleReceivedData(data.data);
+        });
+    };
+
+    useEffect(() => {
+        setDevice(store.connectedDevice);
+    }, []);
+
+    useEffect(() => {
+        if (device) {
+            listenForData(device);
+        }
+    }, [device]);
 
     useEffect(() => {
         if (store.inJunction === true) {
@@ -28,6 +55,17 @@ const WaitingPage = () => {
         }
     }, [store.inJunction]);
 
+    useEffect(() => {
+        if (store.isGameFinished) {
+            if (store.playerToMove === "player1") {
+                store.setWinner(store.player2Name);
+            } else {
+                store.setWinner(store.player1Name);
+            }
+            router.replace("/gameover");
+        }
+    }, [store.isGameFinished]);
+
     return (
         <SafeAreaView className="flex-1 p-6 box-border">
             <Stack.Screen
@@ -42,6 +80,10 @@ const WaitingPage = () => {
             <Button
                 onPress={() => store.setInJunction(true)}
                 title="Set Junction True"
+            />
+            <Button
+                onPress={() => store.setIsGameFinished(true)}
+                title="Finish Game"
             />
         </SafeAreaView>
     );

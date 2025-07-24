@@ -18,6 +18,8 @@ export const isValidMove = (move) => {
         return false;
     }
     if (move === "") return false;
+    const currentJunction = parseInt(store.currentJunction);
+    updateJunction(currentJunction + 1);
     store.setBannedCard("");
     return true;
 };
@@ -117,4 +119,9 @@ export const addAction = (player, card1, card2) => {
     if (card1 === "ban") {
         store.setBannedCard(card2);
     }
+};
+
+export const updateJunction = (junction) => {
+    const store = useSecureStorage.getState();
+    store.setCurrentJunction(junction);
 };

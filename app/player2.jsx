@@ -1,7 +1,7 @@
 import { View, Text, ToastAndroid, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router, Stack } from "expo-router";
+import { router, Stack, useLocalSearchParams } from "expo-router";
 import Toolbar from "../components/Toolbar";
 import useSecureStorage from "../utils/store";
 import SingleCard from "../components/SingleCard";
@@ -10,6 +10,8 @@ import { useIsFocused } from "@react-navigation/native";
 import Player from "../components/Player";
 
 const Player2 = () => {
+    const { key } = useLocalSearchParams();
+
     const store = useSecureStorage();
     const isFocused = useIsFocused();
     const [cameraKey, setCameraKey] = useState(0);
@@ -20,21 +22,21 @@ const Player2 = () => {
         }
     }, [isFocused]);
     return (
-        <SafeAreaView className="flex-1 px-2 box-border">
+        <View className="flex-1 box-border">
             <Stack.Screen
                 options={{
                     headerShown: false,
                 }}
             />
-            <Toolbar />
             <Player
                 storeMyCards={store.player2CurrentCards}
                 playerName={store.player2Name}
                 playerToMove={"player2"}
                 playerNewCardRoute="/player2newcard"
                 cameraKey={cameraKey}
+                key={key}
             />
-        </SafeAreaView>
+        </View>
     );
 };
 

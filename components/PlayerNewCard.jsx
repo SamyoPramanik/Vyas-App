@@ -64,7 +64,7 @@ const PlayerNewCard = ({
         if (!isValidMove(tempaction)) {
             showToast("Invalid move, please select a valid card.");
             setTimeout(() => {
-                router.replace(playerRoute); // back to camera screen
+                router.replace(playerRoute, { key: playerName }); // back to camera screen
             }, 300); // 200–300ms gives time for focus lifecycle to catch up
             return;
         }
@@ -124,7 +124,7 @@ const PlayerNewCard = ({
             store.setCurrentCard2("");
             store.setCurrentCardId(4);
             store.setCurrentCard2Id(4);
-            router.replace(otherPlayerRoute);
+            router.replace(otherPlayerRoute, { key: playerName });
         }
 
         store.setCurrentCard("");

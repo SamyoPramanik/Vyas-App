@@ -17,9 +17,13 @@ const WaitingPage = () => {
         if (store.inJunction === true) {
             showToast("You have reached a junction!");
             if (store.playerToMove === "player1") {
-                router.replace("/player1");
+                router.replace("/player1", {
+                    key: store.player1Name,
+                });
             } else {
-                router.replace("/player2");
+                router.replace("/player2", {
+                    key: store.player2Name,
+                });
             }
         }
     }, [store.inJunction]);

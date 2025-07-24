@@ -110,14 +110,15 @@ const Player = ({
                 </Text>
             </View>
             <View className="flex flex-row justify-between">
-                {myCards?.map((card, index) => (
-                    <Text key={index} className="text-sm">
-                        {card}
-                    </Text>
-                ))}
+                {store.cardVisible &&
+                    myCards?.map((card, index) => (
+                        <Text key={index} className="text-sm">
+                            {card}
+                        </Text>
+                    ))}
             </View>
             <View className="flex flex-row justify-between">
-                {store.cardVisible && currentCardId < 4 && (
+                {currentCardId < 4 && (
                     <View className="flex w-1/5 animate-pulse">
                         <SingleCard
                             id={currentCardId + 1}
@@ -127,7 +128,7 @@ const Player = ({
                         />
                     </View>
                 )}
-                {store.cardVisible && currentCard2Id < 4 && (
+                {currentCard2Id < 4 && (
                     <View className="flex w-1/5">
                         <SingleCard
                             id={currentCard2Id + 1}

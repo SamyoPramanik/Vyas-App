@@ -74,6 +74,8 @@ const NamesPage = () => {
                 "junction";
             const finishCommand =
                 (await SecureStore.getItemAsync("finishCommand")) || "finish";
+            const cameraFacing =
+                (await SecureStore.getItemAsync("cameraFacing")) || "front";
 
             const cardVisible =
                 (await SecureStore.getItemAsync("cardVisible")) === "true";
@@ -86,6 +88,8 @@ const NamesPage = () => {
             store.setFinishCommand(finishCommand);
             store.setPlayerToMove("player1");
             store.setCardVisible(cardVisible);
+            store.setCurrentJunction(0);
+            store.setCameraFacing(cameraFacing);
 
             await SecureStore.setItemAsync("forwardCommand", forwardCommand);
             await SecureStore.setItemAsync("backwardCommand", backwardCommand);
@@ -97,6 +101,7 @@ const NamesPage = () => {
                 "cardVisible",
                 cardVisible.toString()
             );
+            await SecureStore.setItemAsync("cameraFacing", cameraFacing);
         })();
     };
 

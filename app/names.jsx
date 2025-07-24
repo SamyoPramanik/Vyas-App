@@ -114,6 +114,17 @@ const NamesPage = () => {
         store.setPlayer2Name(player2Name);
         store.setIsGameFinished(false);
         store.setWinner("");
+        store.setPlayer1CurrentCards([]);
+        store.setPlayer2CurrentCards([]);
+        store.setPlayer1Moves([]);
+        store.setPlayer2Moves([]);
+        store.setRecentMoves([]);
+        store.setInJunction(false);
+        store.setCurrentJunction(0);
+        store.setCurrentCard("");
+        store.setCurrentCard2("");
+        store.setCurrentCardId(40);
+        store.setCurrentCard2Id(40);
 
         distributeCards();
         initializeGame();

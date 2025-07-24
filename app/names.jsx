@@ -59,6 +59,7 @@ const NamesPage = () => {
         store.setWinner("");
         store.setInJunction(false);
         store.setCurrentJunction(0);
+        store.setCardVisible(false);
         (async () => {
             const forwardCommand =
                 (await SecureStore.getItemAsync("forwardCommand")) || "f";
@@ -74,6 +75,9 @@ const NamesPage = () => {
             const finishCommand =
                 (await SecureStore.getItemAsync("finishCommand")) || "finish";
 
+            const cardVisible =
+                (await SecureStore.getItemAsync("cardVisible")) === "true";
+
             store.setForwardCommand(forwardCommand);
             store.setBackwardCommand(backwardCommand);
             store.setLeftCommand(leftCommand);
@@ -81,6 +85,7 @@ const NamesPage = () => {
             store.setJunctionCommand(junctionCommand);
             store.setFinishCommand(finishCommand);
             store.setPlayerToMove("player1");
+            store.setCardVisible(cardVisible);
 
             await SecureStore.setItemAsync("forwardCommand", forwardCommand);
             await SecureStore.setItemAsync("backwardCommand", backwardCommand);
@@ -88,6 +93,10 @@ const NamesPage = () => {
             await SecureStore.setItemAsync("rightCommand", rightCommand);
             await SecureStore.setItemAsync("junctionCommand", junctionCommand);
             await SecureStore.setItemAsync("finishCommand", finishCommand);
+            await SecureStore.setItemAsync(
+                "cardVisible",
+                cardVisible.toString()
+            );
         })();
     };
 

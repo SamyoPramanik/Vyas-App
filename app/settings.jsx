@@ -5,6 +5,7 @@ import {
     TouchableOpacity,
     ToastAndroid,
     ScrollView,
+    Switch,
 } from "react-native";
 import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -22,6 +23,7 @@ const SettingsPage = () => {
         junctionCommand: "junction",
         finishCommand: "finish",
         cameraFacing: "back",
+        cardVisible: false,
     });
     const store = useSecureStorage();
 
@@ -44,6 +46,8 @@ const SettingsPage = () => {
                     "finish";
                 const cameraFacing =
                     (await SecureStore.getItemAsync("cameraFacing")) || "back";
+                const cardVisible =
+                    (await SecureStore.getItemAsync("cardVisible")) === "true";
 
                 setSettings({
                     forwardCommand,
@@ -53,6 +57,7 @@ const SettingsPage = () => {
                     junctionCommand,
                     finishCommand,
                     cameraFacing,
+                    cardVisible,
                 });
             } catch (error) {
                 console.error("Error loading settings:", error);
@@ -75,6 +80,7 @@ const SettingsPage = () => {
             store.setJunctionCommand(settings.junctionCommand);
             store.setFinishCommand(settings.finishCommand);
             store.setCameraFacing(settings.cameraFacing);
+            store.setCardVisible(settings.cardVisible);
 
             await SecureStore.setItemAsync(
                 "forwardCommand",
@@ -100,6 +106,10 @@ const SettingsPage = () => {
             await SecureStore.setItemAsync(
                 "cameraFacing",
                 settings.cameraFacing
+            );
+            await SecureStore.setItemAsync(
+                "cardVisible",
+                settings.cardVisible.toString()
             );
             showToast("Settings saved successfully!");
         } catch (error) {
@@ -186,6 +196,15 @@ const SettingsPage = () => {
                         value={settings.finishCommand}
                         className="border border-gray-300 p-3 rounded-md mb-4"
                         placeholder="Finish Command"
+                    />
+                </View>
+                <View className="flex gap-1 flex-row items-center justify-between">
+                    <Text className="text-lg font-bold">Card Visibility</Text>
+                    <Switch
+                        value={settings.cardVisible}
+                        onValueChange={(value) =>
+                            handleInputChange("cardVisible", value)
+                        }
                     />
                 </View>
                 <View className="flex gap-1">

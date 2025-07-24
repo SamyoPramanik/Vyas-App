@@ -104,9 +104,9 @@ const Player = ({
     };
 
     return (
-        <View className="flex-1" key={key}>
+        <View style={{ flex: 1 }} key={key}>
             <CameraView
-                className="absolute w-screen h-screen"
+                style={{ flex: 1 }}
                 key={cameraKey}
                 facing={cameraFacing}
                 barcodeScannerSettings={{
@@ -116,47 +116,55 @@ const Player = ({
                     handleQrCode(data);
                 }}
             >
-                <View className="flex h-full w-full"></View>
+                <View
+                    style={{
+                        flex: 1,
+                        paddingHorizontal: 8,
+                        paddingVertical: 16,
+                    }}
+                >
+                    <Toolbar />
+                    <View className="flex items-center">
+                        <Text className="text-xl text-sky-600">
+                            <Text className="font-bold">{`${playerName}`}</Text>
+                            {`'s turn`}
+                        </Text>
+                    </View>
+                    <View className="flex flex-row justify-between">
+                        {store.cardVisible &&
+                            myCards?.map((card, index) => (
+                                <Text
+                                    key={index}
+                                    className="text-sm text-slate-400"
+                                >
+                                    {card}
+                                </Text>
+                            ))}
+                    </View>
+                    <View className="flex-1 flex-row gap-2 items-center justify-center">
+                        {currentCardId < 4 && (
+                            <View className="flex w-1/5 opacity-50 animate-pulse">
+                                <SingleCard
+                                    id={currentCardId + 1}
+                                    name={myCards[currentCardId]}
+                                    currentCard={currentCardId}
+                                    currentCard2={currentCard2Id}
+                                />
+                            </View>
+                        )}
+                        {currentCard2Id < 4 && (
+                            <View className="flex w-1/5 opacity-50 animate-pulse">
+                                <SingleCard
+                                    id={currentCard2Id + 1}
+                                    name={myCards[currentCard2Id]}
+                                    currentCard={currentCardId}
+                                    currentCard2={currentCard2Id}
+                                />
+                            </View>
+                        )}
+                    </View>
+                </View>
             </CameraView>
-            <View className="flex absolute z-10 w-full h-full px-2 py-4">
-                <Toolbar />
-                <View className="flex items-center">
-                    <Text className="text-xl">
-                        <Text className="font-bold">{`${playerName}`}</Text>
-                        {`'s turn`}
-                    </Text>
-                </View>
-                <View className="flex flex-row justify-between">
-                    {store.cardVisible &&
-                        myCards?.map((card, index) => (
-                            <Text key={index} className="text-sm">
-                                {card}
-                            </Text>
-                        ))}
-                </View>
-                <View className="flex flex-row gap-2 items-center">
-                    {currentCardId < 4 && (
-                        <View className="flex w-1/5 opacity-50 animate-pulse">
-                            <SingleCard
-                                id={currentCardId + 1}
-                                name={myCards[currentCardId]}
-                                currentCard={currentCardId}
-                                currentCard2={currentCard2Id}
-                            />
-                        </View>
-                    )}
-                    {currentCard2Id < 4 && (
-                        <View className="flex w-1/5 opacity-50 animate-pulse">
-                            <SingleCard
-                                id={currentCard2Id + 1}
-                                name={myCards[currentCard2Id]}
-                                currentCard={currentCardId}
-                                currentCard2={currentCard2Id}
-                            />
-                        </View>
-                    )}
-                </View>
-            </View>
         </View>
     );
 };

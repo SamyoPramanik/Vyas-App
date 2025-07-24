@@ -141,7 +141,7 @@ const PlayerNewCard = ({
                     {` new card`}
                 </Text>
             </View>
-            <View className="flex flex-row justify-between">
+            <View className="flex flex-row justify-center gap-2">
                 {currentCardId < 4 && (
                     <View className="flex w-1/5">
                         <SingleCard

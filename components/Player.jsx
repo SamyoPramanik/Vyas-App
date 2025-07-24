@@ -118,7 +118,7 @@ const Player = ({
             </View>
             <View className="flex flex-row justify-between">
                 {currentCardId < 4 && (
-                    <View className="flex w-1/5">
+                    <View className="flex w-1/5 animate-pulse">
                         <SingleCard
                             id={currentCardId + 1}
                             name={myCards[currentCardId]}

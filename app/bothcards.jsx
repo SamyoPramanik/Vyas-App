@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ToastAndroid } from "react-native";
 import React, { useEffect, useState } from "react";
 import Toolbar from "../components/Toolbar";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,12 +11,29 @@ const CardsPage = () => {
     const [player1Cards, setPlayer1Cards] = useState([]);
     const [player2Cards, setPlayer2Cards] = useState([]);
 
+    const showToast = (message) => {
+        ToastAndroid.show(message, ToastAndroid.SHORT);
+    };
+
+    const sendCommand = async (command) => {
+        showToast(`Sending command: ${command}`);
+        if (store.connectedDevice && command) {
+            try {
+                await store.connectedDevice.write(command + "\n");
+                showToast(`Sent: ${command}`);
+            } catch (err) {
+                showToast(`Send failed: ${err}`);
+            }
+        }
+    };
+
     useEffect(() => {
         setPlayer1Cards(store.player1CurrentCards);
         setPlayer2Cards(store.player2CurrentCards);
     }, []);
 
     const handleContinue = () => {
+        sendCommand(store.forwardCommand);
         router.replace("/waiting");
     };
 

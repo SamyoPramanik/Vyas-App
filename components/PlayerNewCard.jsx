@@ -83,7 +83,9 @@ const PlayerNewCard = ({
             updated[currentCardId] = card1;
 
             if (currentCard === "block" || currentCard === "ban") {
-                const card2 = randomActionCard();
+                const card2 = randomActionCard(
+                    playerCurrentCards[(currentCard2Id + 1) % 2]
+                );
                 setNewCard2(card2);
                 updated[currentCard2Id] = card2;
             }

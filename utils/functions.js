@@ -1,9 +1,13 @@
 import { actionCards, powerCards } from "./constants";
 import useSecureStorage from "./store";
 
-export const randomActionCard = () => {
+export const randomActionCard = (currentCard = "") => {
     const idx = Math.floor(Math.random() * 1009) % 4;
-    return actionCards[idx];
+    const newCard = actionCards[idx];
+    if (newCard === currentCard) {
+        return randomActionCard(currentCard);
+    }
+    return newCard;
 };
 
 export const randomPowerCard = () => {

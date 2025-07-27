@@ -33,6 +33,7 @@ const PlayerNewCard = ({
     const [currentCard2Id, setCurrentCard2Id] = useState(4);
     const [currentCard, setCurrentCard] = useState(store.currentCard || "");
     const [currentCard2, setCurrentCard2] = useState(store.currentCard2 || "");
+    const [isLoading, setIsLoading] = useState(false);
 
     const showToast = (message) => {
         ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -103,6 +104,8 @@ const PlayerNewCard = ({
     };
 
     const confirmMove = async () => {
+        if (!validAction || isLoading) return;
+        setIsLoading(true);
         const command = await getCommand(action);
 
         if (currentCard !== "block") {
@@ -131,6 +134,7 @@ const PlayerNewCard = ({
         store.setCurrentCard2("");
         store.setCurrentCardId(4);
         store.setCurrentCard2Id(4);
+        setIsLoading(false);
     };
 
     return (
@@ -167,6 +171,7 @@ const PlayerNewCard = ({
                 <TouchableOpacity
                     activeOpacity={0.7}
                     onPress={confirmMove}
+                    disabled={!validAction || isLoading}
                     className="flex items-center p-4 w-1/2 bg-blue-500 rounded-lg"
                 >
                     <Text className="text-white font-bold">Continue</Text>

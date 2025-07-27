@@ -13,7 +13,7 @@ const Toolbar = () => {
                 activeOpacity={0.5}
             >
                 <Image
-                    source={require("../assets/images/disconnected.png")}
+                    source={require("../assets/images/connection.png")}
                     style={{ width: 24, height: 24 }}
                 />
             </TouchableOpacity>

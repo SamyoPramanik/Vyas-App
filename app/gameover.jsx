@@ -43,7 +43,7 @@ export default function GameOver() {
                 </Text>
                 <TouchableOpacity
                     onPress={() => {
-                        router.replace("/");
+                        router.replace("/names");
                     }}
                     className="mt-6 p-4 bg-blue-500 rounded-lg"
                     activeOpacity={0.7}

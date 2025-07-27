@@ -38,7 +38,7 @@ const CardsPage = () => {
     };
 
     return (
-        <SafeAreaView className="flex-1 px-2 box-border w-full h-full">
+        <SafeAreaView className="flex-1 px-2 box-border w-full h-full bg-black">
             <Stack.Screen
                 options={{
                     headerShown: false,
@@ -50,19 +50,14 @@ const CardsPage = () => {
                     <View className="flex w-1/2">
                         <View className="flex w-full items-center">
                             <Text className="text-xl">
-                                <Text className="font-bold">{`${store.player1Name}`}</Text>
+                                <Text className="font-bold text-slate-400">{`${store.player1Name}`}</Text>
                                 {` cards`}
                             </Text>
                         </View>
                         <View className="flex-row w-full">
                             {player1Cards.map((card, index) => (
                                 <View key={index} className="flex w-1/4">
-                                    <SingleCard
-                                        id={index + 1}
-                                        name={card}
-                                        currentCard={10}
-                                        currentCard2={10}
-                                    />
+                                    <SingleCard id={index + 1} name={card} />
                                 </View>
                             ))}
                         </View>
@@ -71,19 +66,14 @@ const CardsPage = () => {
                     <View className="flex w-1/2">
                         <View className="flex w-full items-center">
                             <Text className="text-xl">
-                                <Text className="font-bold">{`${store.player2Name}`}</Text>
+                                <Text className="font-bold text-slate-400">{`${store.player2Name}`}</Text>
                                 {` cards`}
                             </Text>
                         </View>
                         <View className="flex-row w-full">
                             {player2Cards.map((card, index) => (
                                 <View key={index} className="flex w-1/4">
-                                    <SingleCard
-                                        id={index + 1}
-                                        name={card}
-                                        currentCard={10}
-                                        currentCard2={10}
-                                    />
+                                    <SingleCard id={index + 1} name={card} />
                                 </View>
                             ))}
                         </View>

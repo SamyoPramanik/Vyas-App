@@ -61,7 +61,7 @@ const WaitingPage = () => {
     }, [store.isGameFinished]);
 
     return (
-        <SafeAreaView className="flex-1 p-6 box-border">
+        <SafeAreaView className="flex-1 p-6 box-border bg-black">
             <Stack.Screen
                 options={{
                     headerShown: false,
@@ -69,7 +69,9 @@ const WaitingPage = () => {
             />
             <Toolbar />
             <View className="flex h-12 items-center justify-center">
-                <Text className="text-xl">Waiting to reach a junction...</Text>
+                <Text className="text-xl text-slate-400">
+                    Waiting to reach a junction...
+                </Text>
             </View>
             <Button
                 onPress={() => store.setInJunction(true)}

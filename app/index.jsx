@@ -1,4 +1,5 @@
 import {
+    ImageBackground,
     PermissionsAndroid,
     Platform,
     Text,
@@ -10,6 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { router, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useState } from "react";
+import { StatusBar } from "expo-status-bar";
 
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
@@ -56,26 +58,36 @@ export default function App() {
         return null; // Render nothing while loading
     }
     return (
-        <SafeAreaView className="flex-1">
+        <View className="flex-1">
             <Stack.Screen
                 options={{
                     headerShown: false,
                 }}
             />
-            <View className="flex-1 items-center justify-center">
-                <Text className="text-3xl font-bold">Welcome to Vyas!</Text>
-                <TouchableOpacity
-                    onPress={() => {
-                        router.replace("/names");
-                    }}
-                    className="mt-6 p-4 bg-blue-500 rounded-lg"
-                    activeOpacity={0.7}
-                >
-                    <Text className="text-lg w-full px-6 text-white font-bold">
-                        Start Game
-                    </Text>
-                </TouchableOpacity>
-            </View>
-        </SafeAreaView>
+            <ImageBackground
+                source={require("../assets/images/homepage.jpg")}
+                resizeMode="cover"
+                className="flex-1 items-center justify-center"
+            >
+                <View className="flex w-full h-full items-center justify-center bg-black/50">
+                    <View className="flex-1 items-center justify-center">
+                        <Text className="text-3xl font-bold text-slate-200">
+                            Welcome to Vyas!
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => {
+                                router.replace("/names");
+                            }}
+                            className="mt-6 p-4 bg-blue-500 rounded-lg"
+                            activeOpacity={0.7}
+                        >
+                            <Text className="text-lg w-full px-6 text-white font-bold">
+                                Start Game
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </ImageBackground>
+        </View>
     );
 }

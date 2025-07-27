@@ -132,36 +132,42 @@ const NamesPage = () => {
     };
 
     return (
-        <SafeAreaView className="flex-1 px-6 box-border">
+        <SafeAreaView className="flex-1 px-6 box-border bg-black">
             <Stack.Screen
                 options={{
                     headerShown: false,
                 }}
             />
             <Toolbar />
-            <View className="flex gap-1">
+            <View className="flex justify-center gap-1">
                 <View className="items-center p-1">
-                    <Text className="text-6xl font-bold">Vyas</Text>
+                    <Text className="text-6xl font-bold text-slate-400">
+                        Vyas
+                    </Text>
                 </View>
                 <View className="flex gap-1">
-                    <Text className="font-bold">Enter Player1 Name</Text>
+                    <Text className="font-semibold text-slate-400">
+                        Enter Player1 Name
+                    </Text>
                     <TextInput
                         onChangeText={(text) => setPlayer1Name(text)}
                         value={player1Name}
-                        className="border border-gray-300 p-3 rounded-md mb-4"
+                        className="border border-slate-500 p-3 rounded-md mb-4 text-slate-400"
                         placeholder="Player 1"
                     />
                 </View>
                 <View className="flex gap-1">
-                    <Text className="font-bold">Enter Player2 Name</Text>
+                    <Text className="font-semibold text-slate-400">
+                        Enter Player2 Name
+                    </Text>
                     <TextInput
                         onChangeText={(text) => setPlayer2Name(text)}
                         value={player2Name}
-                        className="border border-gray-300 p-3 rounded-md mb-4"
+                        className="border border-slate-500 p-3 rounded-md mb-4 text-slate-400"
                         placeholder="Player 2"
                     />
                 </View>
-                <View>
+                <View className="flex justify-center">
                     <TouchableOpacity
                         activeOpacity={0.7}
                         onPress={handleStartGame}

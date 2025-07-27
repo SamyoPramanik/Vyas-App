@@ -1,24 +1,31 @@
 import { View, Text } from "react-native";
 import React from "react";
+import { actionCards, powerCards } from "../utils/constants";
 
-const SingleCard = ({ id, name, currentCard, currentCard2 }) => {
+const SingleCard = ({ id, name }) => {
     const setCardColor = () => {
-        if (id === currentCard + 1) {
-            return "bg-sky-500";
+        for (const card of actionCards) {
+            if (card === name) {
+                console.log(name, "action card");
+                return "bg-[#d8ead2]";
+            }
         }
-        if (id === currentCard2 + 1) {
-            return "bg-sky-400";
+
+        for (const card of powerCards) {
+            if (card === name) {
+                return "bg-[#dad2e9]";
+            }
         }
-        return "bg-sky-200";
+        return "bg-[#f0f0f0]";
     };
     return (
         <View className="flex w-full p-1 items-center justify-center">
             <View
-                className={`flex items-center justify-center ${setCardColor()} rounded-xl w-full h-60 mb-2`}
+                className={`flex items-center justify-center rounded-xl w-full h-60 mb-1 ${setCardColor()}`}
             >
                 <Text className="text-2xl font-white font-bold">{id}</Text>
             </View>
-            <Text className="text-sm">{name}</Text>
+            <Text className="text-md text-slate-400">{name}</Text>
         </View>
     );
 };

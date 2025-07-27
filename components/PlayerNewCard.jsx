@@ -136,7 +136,7 @@ const PlayerNewCard = ({
     return (
         <View>
             <View className="flex items-center">
-                <Text className="text-xl">
+                <Text className="text-xl text-slate-400">
                     <Text className="font-bold">{`${playerName}`}</Text>
                     {` new card`}
                 </Text>

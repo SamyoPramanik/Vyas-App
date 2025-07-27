@@ -29,7 +29,7 @@ const Player1NewCard = () => {
         fetchCards();
     }, []);
     return (
-        <SafeAreaView className="flex-1 px-2 box-border">
+        <SafeAreaView className="flex-1 px-2 box-border bg-black">
             <Stack.Screen
                 options={{
                     headerShown: false,

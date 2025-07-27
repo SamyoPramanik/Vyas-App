@@ -104,7 +104,7 @@ const PlayerNewCard = ({
     };
 
     const confirmMove = async () => {
-        if (!validAction || isLoading) return;
+        if (isLoading) return;
         setIsLoading(true);
         const command = await getCommand(action);
 
@@ -148,22 +148,12 @@ const PlayerNewCard = ({
             <View className="flex flex-row justify-center gap-2">
                 {currentCardId < 4 && (
                     <View className="flex w-1/5">
-                        <SingleCard
-                            id={currentCardId + 1}
-                            name={newCard1}
-                            currentCard={currentCardId}
-                            currentCard2={currentCard2Id}
-                        />
+                        <SingleCard id={currentCardId + 1} name={newCard1} />
                     </View>
                 )}
                 {currentCard2Id < 4 && (
                     <View className="flex w-1/5">
-                        <SingleCard
-                            id={currentCard2Id + 1}
-                            name={newCard2}
-                            currentCard={currentCardId}
-                            currentCard2={currentCard2Id}
-                        />
+                        <SingleCard id={currentCard2Id + 1} name={newCard2} />
                     </View>
                 )}
             </View>
@@ -171,7 +161,7 @@ const PlayerNewCard = ({
                 <TouchableOpacity
                     activeOpacity={0.7}
                     onPress={confirmMove}
-                    disabled={!validAction || isLoading}
+                    disabled={isLoading}
                     className="flex items-center p-4 w-1/2 bg-blue-500 rounded-lg"
                 >
                     <Text className="text-white font-bold">Continue</Text>

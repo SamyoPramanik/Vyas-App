@@ -1,13 +1,18 @@
-import { actionCards, powerCards } from "./constants";
+import {
+    actionCards,
+    allowedMoves,
+    nextJunction,
+    powerCards,
+} from "./constants";
 import useSecureStorage from "./store";
 
-export const randomActionCard = (currentCard = "") => {
-    const idx = Math.floor(Math.random() * 1009) % 4;
-    const newCard = actionCards[idx];
-    if (newCard === currentCard) {
-        return randomActionCard(currentCard);
-    }
-    return newCard;
+export const randomActionCard = (junction = null) => {
+    let len = 4;
+    if (junction != null) len = allowedMoves[junction].length;
+    let idx = Math.floor(Math.random() * 1009) % len;
+    if (junction == null) return actionCards[idx];
+
+    return allowedMoves[junction][idx];
 };
 
 export const randomPowerCard = () => {
@@ -22,8 +27,14 @@ export const isValidMove = (move) => {
         return false;
     }
     if (move === "") return false;
-    const currentJunction = parseInt(store.currentJunction);
-    updateJunction(currentJunction + 1);
+    let validMove = false;
+    allowedMoves[parseInt(store.currentJunction)].forEach((element) => {
+        if (element === move) {
+            validMove = true;
+        }
+    });
+    if (!validMove) return false;
+    updateJunction(move);
     store.setBannedCard("");
     return true;
 };
@@ -74,6 +85,7 @@ export const findAction = (player, card1, card2) => {
 };
 
 export const genNewCard = (card1) => {
+    const store = useSecureStorage.getState();
     if (
         card1 === "hack" ||
         card1 === "wild" ||
@@ -92,7 +104,7 @@ export const genNewCard = (card1) => {
         card1 === "left" ||
         card1 === "right"
     ) {
-        return randomActionCard();
+        return randomActionCard(parseInt(store.currentJunction));
     }
 };
 
@@ -125,7 +137,9 @@ export const addAction = (player, card1, card2) => {
     }
 };
 
-export const updateJunction = (junction) => {
+export const updateJunction = (move) => {
     const store = useSecureStorage.getState();
-    store.setCurrentJunction(junction);
+    const currentJunction = parseInt(store.currentJunction);
+    const nextJunc = nextJunction[currentJunction][move];
+    store.setCurrentJunction(nextJunc);
 };

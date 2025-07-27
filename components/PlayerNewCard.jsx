@@ -59,9 +59,7 @@ const PlayerNewCard = ({
         setCurrentCardId(store.currentCardId);
         let tempaction = "";
 
-        if (currentCard !== "hack")
-            tempaction = findAction(player, currentCard, currentCard2);
-        else tempaction = "forward";
+        tempaction = findAction(player, currentCard, currentCard2);
         if (!isValidMove(tempaction)) {
             showToast("Invalid move, please select a valid card.");
             setTimeout(() => {
@@ -83,9 +81,7 @@ const PlayerNewCard = ({
             updated[currentCardId] = card1;
 
             if (currentCard === "block" || currentCard === "ban") {
-                const card2 = randomActionCard(
-                    playerCurrentCards[(currentCard2Id + 1) % 2]
-                );
+                const card2 = randomActionCard(store.currentJunction);
                 setNewCard2(card2);
                 updated[currentCard2Id] = card2;
             }

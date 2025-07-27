@@ -32,12 +32,14 @@ const NamesPage = () => {
 
         const player1Cards = [];
         const player2Cards = [];
-        for (let i = 0; i < 2; i++) {
-            const card1 = randomActionCard();
-            const card2 = randomActionCard();
-            player1Cards.push(card1);
-            player2Cards.push(card2);
-        }
+        let card1 = randomActionCard();
+        let card2 = randomActionCard();
+        player1Cards.push(card1);
+        player2Cards.push(card2);
+        card1 = randomActionCard(0);
+        card2 = randomActionCard(0);
+        player1Cards.push(card1);
+        player2Cards.push(card2);
         for (let i = 0; i < 2; i++) {
             const card1 = randomPowerCard();
             const card2 = randomPowerCard();
@@ -88,7 +90,6 @@ const NamesPage = () => {
             store.setFinishCommand(finishCommand);
             store.setPlayerToMove("player1");
             store.setCardVisible(cardVisible);
-            store.setCurrentJunction(0);
             store.setCameraFacing(cameraFacing);
 
             await SecureStore.setItemAsync("forwardCommand", forwardCommand);

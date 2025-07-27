@@ -31,7 +31,7 @@ export const allowedMoves = [
     ["backward", "left", "right"], //26
     ["forward", "backward", "right"], //27
     ["forward", "backward", "left"], //28
-    ["backward", "forward", "left"], //29
+    ["backward", "right", "left"], //29
 ];
 
 export const nextJunction = [
@@ -43,26 +43,26 @@ export const nextJunction = [
     { backward: 10, left: 6, right: 1 }, //5
     { forward: 2, backward: 4, left: 10 }, //6
     { forward: 4, backward: 2, right: 10 }, //7
-    { backward: null, right: null, left: null }, //8
-    { forward: null, backward: null, left: null }, //9
-    { forward: null, backward: null, right: null }, //10
-    { left: null, right: null }, //11
-    { forward: null, backward: null }, //12
-    { forward: null, backward: null }, //13
-    { backward: null, left: null, right: null }, //14
-    { forward: null, backward: null, right: null }, //15
-    { forward: null, backward: null, left: null }, //16
-    { forward: null, backward: null, left: null, right: null }, //17
-    { forward: null, backward: null, left: null, right: null }, //18
-    { forward: null, backward: null, left: null, right: null }, //19
-    { forward: null, backward: null, left: null, right: null }, //20
-    { forward: null, backward: null, right: null }, //21
-    { forward: null, backward: null, left: null }, //22
-    { backward: null, left: null, right: null }, //23
-    { forward: null, backward: null, right: null }, //24
-    { forward: null, backward: null, left: null }, //25
-    { backward: null, left: null, right: null }, //26
-    { forward: null, backward: null, right: null }, //27
-    { forward: null, backward: null, left: null }, //28
-    { backward: null, forward: null, left: null }, //29
+    { backward: 10, right: 4, left: 2 }, //8
+    { forward: 8, backward: 5, left: 11 }, //9
+    { forward: 5, backward: 8, right: 11 }, //10
+    { left: 14, right: 20 }, //11
+    { forward: 20, backward: 14 }, //12
+    { forward: 14, backward: 20 }, //13
+    { backward: 12, left: 24, right: 17 }, //14
+    { forward: 17, backward: 24, right: 12 }, //15
+    { forward: 24, backward: 17, left: 12 }, //16
+    { forward: 29, backward: 16, left: 21, right: 13 }, //17
+    { forward: 13, backward: 21, left: 29, right: 16 }, //18
+    { forward: 16, backward: 29, left: 13, right: 21 }, //19
+    { forward: 21, backward: 13, left: 16, right: 29 }, //20
+    { forward: 26, backward: 18, right: 27 }, //21
+    { forward: 18, backward: 26, left: 27 }, //22
+    { backward: 27, left: 18, right: 26 }, //23
+    { forward: 28, backward: 15, right: 22 }, //24
+    { forward: 15, backward: 28, left: 22 }, //25
+    { backward: 22, left: 15, right: 28 }, //26
+    { forward: 25, backward: 23, right: 19 }, //27
+    { forward: 23, backward: 25, left: 19 }, //28
+    { backward: 19, right: 25, left: 23 }, //29
 ];

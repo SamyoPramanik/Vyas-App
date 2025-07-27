@@ -1,22 +1,8 @@
-import {
-    PermissionsAndroid,
-    Platform,
-    Text,
-    Touchable,
-    TouchableOpacity,
-    View,
-} from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router, Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import useSecureStorage from "../utils/store";
-
-SplashScreen.preventAutoHideAsync();
-SplashScreen.setOptions({
-    duration: 2000, // Duration in milliseconds
-    fade: true,
-});
 
 export default function GameOver() {
     const store = useSecureStorage();
@@ -30,15 +16,17 @@ export default function GameOver() {
     }, []);
 
     return (
-        <SafeAreaView className="flex-1">
+        <SafeAreaView className="flex-1 bg-black">
             <Stack.Screen
                 options={{
                     headerShown: false,
                 }}
             />
             <View className="flex-1 items-center justify-center">
-                <Text className="text-3xl font-bold">Game over!!!</Text>
-                <Text className="text-4xl mt-4">
+                <Text className="text-3xl text-slate-400 font-bold">
+                    Game over!!!
+                </Text>
+                <Text className="text-4xl mt-4 text-slate-400">
                     Winner: {winner || "No winner yet"}
                 </Text>
                 <TouchableOpacity
@@ -48,7 +36,7 @@ export default function GameOver() {
                     className="mt-6 p-4 bg-blue-500 rounded-lg"
                     activeOpacity={0.7}
                 >
-                    <Text className="text-lg w-full px-6 text-white font-bold">
+                    <Text className="text-lg w-full px-6 text-white font-semibold">
                         Play Again
                     </Text>
                 </TouchableOpacity>

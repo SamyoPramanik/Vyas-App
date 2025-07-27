@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Stack } from "expo-router";
+import { router, Stack } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import useSecureStorage from "../utils/store";
 import { Picker } from "@react-native-picker/picker";
@@ -125,81 +125,102 @@ const SettingsPage = () => {
         }));
     };
     return (
-        <SafeAreaView className="flex-1 px-6 box-border">
+        <SafeAreaView className="flex-1 px-6 box-border bg-black">
             <Stack.Screen
                 options={{
                     title: "Settings",
+                    headerStyle: {
+                        backgroundColor: "#000",
+                    },
+                    headerTitleStyle: {
+                        color: "#94a3b8",
+                    },
+                    headerTintColor: "#94a3b8",
                 }}
             />
             <ScrollView className="flex gap-1 -mt-4">
                 <View className="flex gap-1">
-                    <Text className="font-bold">Forward Command</Text>
+                    <Text className="font-semibold text-slate-400">
+                        Forward Command
+                    </Text>
                     <TextInput
                         onChangeText={(text) =>
                             handleInputChange("forwardCommand", text)
                         }
                         value={settings.forwardCommand}
-                        className="border border-gray-300 p-3 rounded-md mb-4"
+                        className="border border-slate-500 text-slate-400 p-3 rounded-md mb-4"
                         placeholder="Forward Command"
                     />
                 </View>
                 <View className="flex gap-1">
-                    <Text className="font-bold">Backward Command</Text>
+                    <Text className="font-semibold text-slate-400">
+                        Backward Command
+                    </Text>
                     <TextInput
                         onChangeText={(text) =>
                             handleInputChange("backwardCommand", text)
                         }
                         value={settings.backwardCommand}
-                        className="border border-gray-300 p-3 rounded-md mb-4"
+                        className="border border-slate-500 text-slate-400 p-3 rounded-md mb-4"
                         placeholder="Backward Command"
                     />
                 </View>
                 <View className="flex gap-1">
-                    <Text className="font-bold">Left Command</Text>
+                    <Text className="font-semibold text-slate-400">
+                        Left Command
+                    </Text>
                     <TextInput
                         onChangeText={(text) =>
                             handleInputChange("leftCommand", text)
                         }
                         value={settings.leftCommand}
-                        className="border border-gray-300 p-3 rounded-md mb-4"
+                        className="border border-slate-500 text-slate-400 p-3 rounded-md mb-4"
                         placeholder="Left Command"
                     />
                 </View>
                 <View className="flex gap-1">
-                    <Text className="font-bold">Right Command</Text>
+                    <Text className="font-semibold text-slate-400">
+                        Right Command
+                    </Text>
                     <TextInput
                         onChangeText={(text) =>
                             handleInputChange("rightCommand", text)
                         }
                         value={settings.rightCommand}
-                        className="border border-gray-300 p-3 rounded-md mb-4"
+                        className="border border-slate-500 text-slate-400 p-3 rounded-md mb-4"
                         placeholder="Right Command"
                     />
                 </View>
                 <View className="flex gap-1">
-                    <Text className="font-bold">Junction Command</Text>
+                    <Text className="font-semibold text-slate-400">
+                        Junction Command
+                    </Text>
                     <TextInput
                         onChangeText={(text) =>
                             handleInputChange("junctionCommand", text)
                         }
                         value={settings.junctionCommand}
-                        className="border border-gray-300 p-3 rounded-md mb-4"
+                        className="border border-slate-500 text-slate-400 p-3 rounded-md mb-4"
                         placeholder="Junction Command"
                     />
                 </View>
                 <View className="flex gap-1">
-                    <Text className="font-bold">Finish Command</Text>
+                    <Text className="font-semibold text-slate-400">
+                        Finish Command
+                    </Text>
                     <TextInput
                         onChangeText={(text) =>
                             handleInputChange("finishCommand", text)
                         }
                         value={settings.finishCommand}
-                        className="border border-gray-300 p-3 rounded-md mb-4"
+                        className="border border-slate-500 text-slate-400 p-3 rounded-md mb-4"
                         placeholder="Finish Command"
                     />
                 </View>
                 <View className="flex gap-1 flex-row items-center justify-between">
-                    <Text className="text-lg font-bold">Card Visibility</Text>
+                    <Text className="text-lg font-semibold text-slate-400">
+                        Card Visibility
+                    </Text>
                     <Switch
                         value={settings.cardVisible}
                         onValueChange={(value) =>
@@ -208,28 +229,47 @@ const SettingsPage = () => {
                     />
                 </View>
                 <View className="flex gap-1">
-                    <Text className="font-bold">Camera Facing</Text>
-                    <View className="border border-gray-300 rounded-md">
+                    <Text className="font-semibold text-slate-400">
+                        Camera Facing
+                    </Text>
+                    <View className="border border-slate-500 text-slate-400 rounded-md">
                         <Picker
                             selectedValue={settings.cameraFacing}
                             onValueChange={(itemValue) =>
                                 handleInputChange("cameraFacing", itemValue)
                             }
-                            style={{ padding: 0, margin: 0, height: 50 }}
+                            style={{
+                                padding: 0,
+                                margin: 0,
+                                height: 50,
+                                backgroundColor: "#1f2937",
+                                color: "#94a3b8",
+                            }}
                         >
                             <Picker.Item label="Back" value="back" />
                             <Picker.Item label="Front" value="front" />
                         </Picker>
                     </View>
                 </View>
-                <View className="flex mt-6">
+                <View className="flex mt-6 gap-1 items-end">
                     <TouchableOpacity
                         onPress={handleSaveSettings}
                         activeOpacity={0.7}
-                        className="bg-blue-500 text-white px-4 py-4 items-center justify-center rounded-md"
+                        className="bg-blue-500 text-white w-full px-4 py-4 items-center justify-center rounded-md"
                     >
                         <Text className="text-white font-bold">
                             Save Settings
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            router.push("/config");
+                        }}
+                        activeOpacity={0.7}
+                        className="bg-blue-500 text-white px-4 py-2 items-center justify-center rounded-md"
+                    >
+                        <Text className="text-white font-semibold text-sm">
+                            Configure
                         </Text>
                     </TouchableOpacity>
                 </View>

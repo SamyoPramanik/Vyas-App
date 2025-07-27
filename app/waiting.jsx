@@ -8,7 +8,6 @@ import { Button } from "react-native";
 
 const WaitingPage = () => {
     const store = useSecureStorage();
-    const [device, setDevice] = useState(null);
 
     const showToast = (message) => {
         ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -17,7 +16,6 @@ const WaitingPage = () => {
     const handleReceivedData = (data) => {
         if (data === store.junctionCommand) {
             store.setInJunction(true);
-            showToast("You have reached a junction!");
         } else if (data === store.finishCommand) {
             store.setIsGameFinished(true);
         }
@@ -25,24 +23,20 @@ const WaitingPage = () => {
 
     const listenForData = async (device) => {
         device.onDataReceived((data) => {
-            console.log(`Received: ${data.data}`);
+            showToast(`Received: ${data.data}`);
             handleReceivedData(data.data);
         });
     };
 
     useEffect(() => {
-        setDevice(store.connectedDevice);
+        if (store.connectedDevice) {
+            listenForData(store.connectedDevice);
+        }
     }, []);
 
     useEffect(() => {
-        if (device) {
-            listenForData(device);
-        }
-    }, [device]);
-
-    useEffect(() => {
         if (store.inJunction === true) {
-            showToast("You have reached a junction!");
+            showToast("You have reached junction " + store.currentJunction);
             if (store.playerToMove === "player1") {
                 router.replace("/player1", {
                     key: store.player1Name,

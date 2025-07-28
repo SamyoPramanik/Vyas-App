@@ -7,30 +7,38 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router, Stack } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useSecureStorage from "../utils/store";
 import Toolbar from "../components/Toolbar";
+import { TextInput } from "react-native";
 
 export default function ConfigPage() {
+    const scrollViewRef = useRef(null);
     const [log, setLog] = useState([]);
+    const [textInput, setTextInput] = useState("");
     const commands = [
-        "R",
-        "L",
-        "F",
-        "S",
-        "B",
-        "C",
-        "K",
-        "I",
-        "D",
-        "P",
-        "Q",
-        "V",
-        "W",
-        "X",
-        "Y",
-        "Z",
-        "T",
+        "R", //0
+        "L", //1
+        "F", //2
+        "S", //3
+        "B", //4
+        "C", //5
+        "K", //6
+        "I", //7
+        "D", //8
+        "E", //9
+    ];
+    const titles = [
+        "Right", //0
+        "Left", //1
+        "Forward", //2
+        "Slow", //3
+        "Break", //4
+        "Calibrate", //5
+        "Info", //6
+        "M+", //7
+        "M-", //8
+        "Eprom", //9
     ];
     const store = useSecureStorage();
 
@@ -39,12 +47,12 @@ export default function ConfigPage() {
     };
 
     const sendCommand = async (command) => {
-        showToast(`Sending command: ${command}`);
-        setLog((prev) => [...prev, `Sent: ${command}`]);
+        // showToast(`Sending command: ${command}`);
         if (store.connectedDevice && command) {
             try {
                 await store.connectedDevice.write(command + "\n");
-                showToast(`Sent: ${command}`);
+                // showToast(`Sent: ${command}`);
+                setLog((prev) => [...prev, `Sent: ${command}`]);
             } catch (err) {
                 showToast(`Send failed: ${err}`);
             }
@@ -53,7 +61,7 @@ export default function ConfigPage() {
 
     const listenForData = async (device) => {
         device.onDataReceived((data) => {
-            showToast(`Received: ${data.data}`);
+            // showToast(`Received: ${data.data}`);
             setLog((prev) => [...prev, `Received: ${data.data}`]);
         });
     };
@@ -86,21 +94,26 @@ export default function ConfigPage() {
                 }}
             />
             <View className="flex-row flex-wrap gap-3 items-center justify-center -mt-5">
-                {commands.map((command) => (
+                {commands.map((command, index) => (
                     <Button
-                        key={command}
+                        key={index}
+                        title={titles[index]}
                         command={command}
                         sendCommand={sendCommand}
                     />
                 ))}
             </View>
-            <View className="flex-1 p-4">
-                <Text className="text-slate-400 font-semibold mb-2">
+            <View className="flex-1 p-4 gap-1">
+                <Text className="text-slate-400 font-semibold">
                     Command Log
                 </Text>
                 <ScrollView
-                    className="bg-gray-800 rounded-lg p-3"
+                    ref={scrollViewRef}
+                    className="bg-gray-800 rounded-lg p-3 flex-1"
                     contentContainerStyle={{ paddingBottom: 20 }}
+                    onContentSizeChange={() =>
+                        scrollViewRef.current?.scrollToEnd({ animated: true })
+                    }
                 >
                     {log.map((entry, index) => (
                         <Text key={index} className="text-slate-400 mb-1">
@@ -108,19 +121,38 @@ export default function ConfigPage() {
                         </Text>
                     ))}
                 </ScrollView>
+                <View className="flex flex-row items-center justify-center gap-1">
+                    <TextInput
+                        className="border border-slate-500 text-slate-400 rounded-lg p-2 flex-1"
+                        placeholder="Type your command..."
+                        value={textInput}
+                        onChangeText={(text) => setTextInput(text)}
+                    />
+                    <TouchableOpacity
+                        className="bg-blue-500 rounded-lg p-2"
+                        onPress={() => {
+                            sendCommand(textInput);
+                            setTextInput("");
+                        }}
+                    >
+                        <Text className="text-white text-lg font-bold">
+                            Send
+                        </Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </SafeAreaView>
     );
 }
 
-const Button = ({ command, sendCommand }) => {
+const Button = ({ command, sendCommand, title }) => {
     return (
         <TouchableOpacity
             onPress={() => sendCommand(command)}
-            className="bg-blue-500 text-white w-10 h-12 items-center justify-center rounded-md"
+            className="bg-blue-500 text-white px-2 h-12 items-center justify-center rounded-md"
             activeOpacity={0.7}
         >
-            <Text className="text-white text-lg font-bold">{command}</Text>
+            <Text className="text-white text-lg font-bold">{title}</Text>
         </TouchableOpacity>
     );
 };

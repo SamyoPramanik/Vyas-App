@@ -124,13 +124,13 @@ const Player = ({
                     }}
                 >
                     <Toolbar />
-                    <View className="flex items-center">
+                    <View className="flex h-fit items-center">
                         <Text className="text-xl text-sky-600">
                             <Text className="font-bold">{`${playerName}`}</Text>
                             {`'s turn`}
                         </Text>
                     </View>
-                    <View className="flex flex-row justify-between">
+                    <View className="flex h-fit flex-row justify-between">
                         {store.cardVisible &&
                             myCards?.map((card, index) => (
                                 <Text
@@ -147,8 +147,7 @@ const Player = ({
                                 <SingleCard
                                     id={currentCardId + 1}
                                     name={myCards[currentCardId]}
-                                    currentCard={currentCardId}
-                                    currentCard2={currentCard2Id}
+                                    height="h-96"
                                 />
                             </View>
                         )}
@@ -157,8 +156,7 @@ const Player = ({
                                 <SingleCard
                                     id={currentCard2Id + 1}
                                     name={myCards[currentCard2Id]}
-                                    currentCard={currentCardId}
-                                    currentCard2={currentCard2Id}
+                                    height="h-96"
                                 />
                             </View>
                         )}

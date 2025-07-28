@@ -2,7 +2,7 @@ import { View, Text } from "react-native";
 import React from "react";
 import { actionCards, powerCards } from "../utils/constants";
 
-const SingleCard = ({ id, name }) => {
+const SingleCard = ({ id, name, height }) => {
     const setCardColor = () => {
         for (const card of actionCards) {
             if (card === name) {
@@ -18,10 +18,11 @@ const SingleCard = ({ id, name }) => {
         }
         return "bg-[#f0f0f0]";
     };
+
     return (
         <View className="flex w-full p-1 items-center justify-center">
             <View
-                className={`flex items-center justify-center rounded-xl w-full h-60 mb-1 ${setCardColor()}`}
+                className={`flex items-center justify-center rounded-xl w-full ${height} mb-1 ${setCardColor()}`}
             >
                 <Text className="text-2xl font-white font-bold">{id}</Text>
             </View>

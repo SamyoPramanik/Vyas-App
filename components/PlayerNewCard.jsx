@@ -138,26 +138,34 @@ const PlayerNewCard = ({
     };
 
     return (
-        <View>
+        <View className="flex-1 gap-4">
             <View className="flex items-center">
                 <Text className="text-xl text-slate-400">
                     <Text className="font-bold">{`${playerName}`}</Text>
                     {` new card`}
                 </Text>
             </View>
-            <View className="flex flex-row justify-center gap-2">
+            <View className="flex-row justify-center gap-2">
                 {currentCardId < 4 && (
                     <View className="flex w-1/5">
-                        <SingleCard id={currentCardId + 1} name={newCard1} />
+                        <SingleCard
+                            id={currentCardId + 1}
+                            name={newCard1}
+                            height="h-96"
+                        />
                     </View>
                 )}
                 {currentCard2Id < 4 && (
                     <View className="flex w-1/5">
-                        <SingleCard id={currentCard2Id + 1} name={newCard2} />
+                        <SingleCard
+                            id={currentCard2Id + 1}
+                            name={newCard2}
+                            height="h-96"
+                        />
                     </View>
                 )}
             </View>
-            <View className="flex items-center">
+            <View className="flex items-center mt-8">
                 <TouchableOpacity
                     activeOpacity={0.7}
                     onPress={confirmMove}

@@ -138,7 +138,7 @@ const SettingsPage = () => {
                     headerTintColor: "#94a3b8",
                 }}
             />
-            <ScrollView className="flex gap-1 -mt-4">
+            <ScrollView className="flex gap-1 -mt-4 w-1/2">
                 <View className="flex gap-1">
                     <Text className="font-semibold text-slate-400">
                         Forward Command

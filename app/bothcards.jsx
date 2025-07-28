@@ -45,8 +45,8 @@ const CardsPage = () => {
                 }}
             />
             <Toolbar />
-            <View className="flex w-full gap-2">
-                <View className="flex flex-row">
+            <View className="flex w-full gap-4">
+                <View className="flex items-center gap-6">
                     <View className="flex w-1/2">
                         <View className="flex w-full items-center">
                             <Text className="text-xl">
@@ -57,12 +57,16 @@ const CardsPage = () => {
                         <View className="flex-row w-full">
                             {player1Cards.map((card, index) => (
                                 <View key={index} className="flex w-1/4">
-                                    <SingleCard id={index + 1} name={card} />
+                                    <SingleCard
+                                        id={index + 1}
+                                        name={card}
+                                        height="h-64"
+                                    />
                                 </View>
                             ))}
                         </View>
                     </View>
-                    <View className="bg-slate-300 w-[1px]"></View>
+                    {/* <View className="bg-slate-300 w-[1px]"></View> */}
                     <View className="flex w-1/2">
                         <View className="flex w-full items-center">
                             <Text className="text-xl">
@@ -73,7 +77,11 @@ const CardsPage = () => {
                         <View className="flex-row w-full">
                             {player2Cards.map((card, index) => (
                                 <View key={index} className="flex w-1/4">
-                                    <SingleCard id={index + 1} name={card} />
+                                    <SingleCard
+                                        id={index + 1}
+                                        name={card}
+                                        height="h-64"
+                                    />
                                 </View>
                             ))}
                         </View>
@@ -83,7 +91,7 @@ const CardsPage = () => {
                     <TouchableOpacity
                         activeOpacity={0.7}
                         onPress={handleContinue}
-                        className="flex items-center py-2 px-4 w-1/2 bg-blue-500 rounded-lg"
+                        className="flex items-center py-3 px-4 w-1/2 bg-blue-500 rounded-lg"
                     >
                         <Text className="text-white font-bold">Continue</Text>
                     </TouchableOpacity>

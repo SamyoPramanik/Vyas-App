@@ -7,11 +7,37 @@ import {
 import useSecureStorage from "./store";
 
 export const randomActionCard = (junction = null) => {
-    let len = 4;
-    if (junction != null) len = allowedMoves[junction].length;
-    let idx = Math.floor(Math.random() * 1009) % len;
-    if (junction == null) return actionCards[idx];
+    if (junction == null) {
+        const len = allowedMoves[0].length;
+        const idx = Math.floor(Math.random() * 1009) % len;
+        return allowedMoves[0][idx];
+    }
+    const moveOptions = [];
+    const possibleNextJunctions = [...Object.values(nextJunction[junction])];
 
+    for (const move of actionCards) {
+        console.log(
+            `Checking if move ${move} is valid for junction ${junction}`
+        );
+        let includeMove = true;
+        for (const n of possibleNextJunctions) {
+            console.log(`Checking if junction ${n} allows move ${move}`);
+            if (!allowedMoves[n].includes(move)) {
+                includeMove = false;
+                break;
+            }
+        }
+        if (includeMove) {
+            moveOptions.push(move);
+        }
+    }
+
+    if (moveOptions.length === 0) {
+        console.warn("No valid action cards available for junction", junction);
+        return null;
+    }
+
+    const idx = Math.floor(Math.random() * 1009) % moveOptions.length;
     return allowedMoves[junction][idx];
 };
 

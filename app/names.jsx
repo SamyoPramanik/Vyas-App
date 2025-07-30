@@ -36,7 +36,7 @@ const NamesPage = () => {
         let card2 = randomActionCard();
         player1Cards.push(card1);
         player2Cards.push(card2);
-        card1 = randomActionCard(0);
+        card1 = randomActionCard();
         card2 = randomActionCard(0);
         player1Cards.push(card1);
         player2Cards.push(card2);

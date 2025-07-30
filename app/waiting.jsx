@@ -14,10 +14,12 @@ const WaitingPage = () => {
     };
 
     const handleReceivedData = (data) => {
-        if (data === store.junctionCommand) {
-            store.setInJunction(true);
-        } else if (data === store.finishCommand) {
-            store.setIsGameFinished(true);
+        if (data.trim() === store.junctionCommand) {
+            if (store.currentJunction === 30) {
+                store.setIsGameFinished(true);
+            } else {
+                store.setInJunction(true);
+            }
         }
     };
 

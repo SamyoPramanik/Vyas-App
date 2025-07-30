@@ -33,7 +33,7 @@ const CardsPage = () => {
     }, []);
 
     const handleContinue = () => {
-        sendCommand(store.forwardCommand);
+        sendCommand("T"); //T for autonomous mode
         router.replace("/waiting");
     };
 

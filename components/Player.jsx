@@ -140,6 +140,9 @@ const Player = ({
                                     {card}
                                 </Text>
                             ))}
+                        <Text className="text-sm text-slate-400">
+                            {store.currentJunction}
+                        </Text>
                     </View>
                     <View className="flex-1 flex-row gap-2 items-center justify-center">
                         {currentCardId < 4 && (

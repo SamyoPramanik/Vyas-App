@@ -60,6 +60,11 @@ const PlayerNewCard = ({
         setCurrentCardId(store.currentCardId);
         let tempaction = "";
 
+        if (currentCard === "skip") {
+            setValidAction(true);
+            return;
+        }
+
         tempaction = findAction(player, currentCard, currentCard2);
         if (!isValidMove(tempaction)) {
             showToast("Invalid move, please select a valid card.");

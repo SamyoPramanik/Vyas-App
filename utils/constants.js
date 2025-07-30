@@ -32,6 +32,7 @@ export const allowedMoves = [
     ["forward", "backward", "right"], //27
     ["forward", "backward", "left"], //28
     ["backward", "right", "left"], //29
+    [], //goal, no moves allowed
 ];
 
 export const nextJunction = [
@@ -59,10 +60,10 @@ export const nextJunction = [
     { forward: 26, backward: 18, right: 27 }, //21
     { forward: 18, backward: 26, left: 27 }, //22
     { backward: 27, left: 18, right: 26 }, //23
-    { forward: 28, backward: 15, right: 22 }, //24
-    { forward: 15, backward: 28, left: 22 }, //25
-    { backward: 22, left: 15, right: 28 }, //26
-    { forward: 25, backward: 23, right: 19 }, //27
-    { forward: 23, backward: 25, left: 19 }, //28
-    { backward: 19, right: 25, left: 23 }, //29
+    { forward: 30, backward: 15, right: 22 }, //24
+    { forward: 15, backward: 30, left: 22 }, //25
+    { backward: 22, left: 15, right: 30 }, //26
+    { forward: 30, backward: 23, right: 19 }, //27
+    { forward: 23, backward: 30, left: 19 }, //28
+    { backward: 19, right: 30, left: 23 }, //29
 ];

@@ -24,6 +24,14 @@ const Player = ({
     const [inJunction, setInJunction] = useState(false);
     const [currentCardId, setCurrentCardId] = useState(0);
     const [currentCard2Id, setCurrentCard2Id] = useState(0);
+    const isFocused = useIsFocused();
+    const [cameraKeyState, setCameraKey] = useState(cameraKey || 0);
+
+    useEffect(() => {
+        if (isFocused) {
+            setCameraKey((prev) => prev + 1);
+        }
+    }, [isFocused]);
 
     const showToast = (message) => {
         ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -107,7 +115,7 @@ const Player = ({
         <View style={{ flex: 1 }} key={key}>
             <CameraView
                 style={{ flex: 1 }}
-                key={cameraKey}
+                key={cameraKeyState}
                 facing={cameraFacing}
                 barcodeScannerSettings={{
                     barcodeTypes: ["qr"],
@@ -116,13 +124,7 @@ const Player = ({
                     handleQrCode(data);
                 }}
             >
-                <View
-                    style={{
-                        flex: 1,
-                        paddingHorizontal: 8,
-                        paddingVertical: 16,
-                    }}
-                >
+                <View className="flex-1 px-2 py-4">
                     <Toolbar />
                     <View className="flex h-fit items-center">
                         <Text className="text-xl text-sky-600">
@@ -130,20 +132,21 @@ const Player = ({
                             {`'s turn`}
                         </Text>
                     </View>
-                    <View className="flex h-fit flex-row justify-between">
+                    <View className="flex h-fit mt-2 flex-row justify-between">
                         {store.cardVisible &&
                             myCards?.map((card, index) => (
-                                <Text
-                                    key={index}
-                                    className="text-sm text-slate-400"
-                                >
-                                    {card}
-                                </Text>
+                                <View key={index} className="flex w-1/4">
+                                    <SingleCard
+                                        id={index + 1}
+                                        name={card}
+                                        height="h-10"
+                                    />
+                                </View>
                             ))}
-                        <Text className="text-sm text-slate-400">
-                            {store.currentJunction}
-                        </Text>
                     </View>
+                    <Text className="text-sm text-slate-400">
+                        {store.currentJunction}
+                    </Text>
                     <View className="flex-1 flex-row gap-2 items-center justify-center">
                         {currentCardId < 4 && (
                             <View className="flex w-1/5 opacity-50 animate-pulse">

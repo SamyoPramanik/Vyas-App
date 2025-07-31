@@ -26,7 +26,16 @@ const SingleCard = ({ id, name, height }) => {
             >
                 <Text className="text-2xl font-white font-bold">{id}</Text>
             </View>
-            <Text className="text-md text-slate-400">{name}</Text>
+            <Text
+                className="text-md text-slate-400"
+                style={{
+                    textShadowColor: "#000",
+                    textShadowOffset: { width: -1, height: 1 },
+                    textShadowRadius: 1,
+                }}
+            >
+                {name}
+            </Text>
         </View>
     );
 };

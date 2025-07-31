@@ -22,7 +22,7 @@ const Player1 = () => {
         }
     }, [isFocused]);
     return (
-        <View className="flex-1 w-full h-full box-border">
+        <SafeAreaView className="flex-1 w-full h-full box-border bg-black">
             <Stack.Screen
                 options={{
                     headerShown: false,
@@ -36,7 +36,7 @@ const Player1 = () => {
                 cameraKey={cameraKey}
                 key={key}
             />
-        </View>
+        </SafeAreaView>
     );
 };
 

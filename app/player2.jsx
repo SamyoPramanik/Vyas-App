@@ -22,7 +22,7 @@ const Player2 = () => {
         }
     }, [isFocused]);
     return (
-        <View className="flex-1 w-full h-full box-border">
+        <View className="flex-1 w-full h-full box-border bg-black">
             <Stack.Screen
                 options={{
                     headerShown: false,

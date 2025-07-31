@@ -54,13 +54,13 @@ const CardsPage = () => {
                                 {` cards`}
                             </Text>
                         </View>
-                        <View className="flex-row w-full">
+                        <View className="flex-row w-full gap-1">
                             {player1Cards.map((card, index) => (
                                 <View key={index} className="flex w-1/4">
                                     <SingleCard
                                         id={index + 1}
                                         name={card}
-                                        height="h-64"
+                                        height="h-80"
                                     />
                                 </View>
                             ))}
@@ -74,13 +74,13 @@ const CardsPage = () => {
                                 {` cards`}
                             </Text>
                         </View>
-                        <View className="flex-row w-full">
+                        <View className="flex-row w-full gap-1">
                             {player2Cards.map((card, index) => (
                                 <View key={index} className="flex w-1/4">
                                     <SingleCard
                                         id={index + 1}
                                         name={card}
-                                        height="h-64"
+                                        height="h-80"
                                     />
                                 </View>
                             ))}

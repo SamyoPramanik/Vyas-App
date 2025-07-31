@@ -15,21 +15,8 @@ export const randomActionCard = (junction = null) => {
     const moveOptions = [];
     const possibleNextJunctions = [...Object.values(nextJunction[junction])];
 
-    for (const move of actionCards) {
-        console.log(
-            `Checking if move ${move} is valid for junction ${junction}`
-        );
-        let includeMove = true;
-        for (const n of possibleNextJunctions) {
-            console.log(`Checking if junction ${n} allows move ${move}`);
-            if (!allowedMoves[n].includes(move)) {
-                includeMove = false;
-                break;
-            }
-        }
-        if (includeMove) {
-            moveOptions.push(move);
-        }
+    for (const nextjunction of possibleNextJunctions) {
+        moveOptions.push(...allowedMoves[nextjunction]);
     }
 
     if (moveOptions.length === 0) {
@@ -38,7 +25,15 @@ export const randomActionCard = (junction = null) => {
     }
 
     const idx = Math.floor(Math.random() * 1009) % moveOptions.length;
-    return allowedMoves[junction][idx];
+    return moveOptions[idx];
+};
+
+export const randomActionCardCurrentJunction = () => {
+    const store = useSecureStorage.getState();
+    const currentJunction = parseInt(store.currentJunction);
+    const len = allowedMoves[currentJunction].length;
+    const idx = Math.floor(Math.random() * 1009) % len;
+    return allowedMoves[currentJunction][idx];
 };
 
 export const randomPowerCard = () => {

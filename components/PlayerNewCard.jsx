@@ -34,6 +34,7 @@ const PlayerNewCard = ({
     const [currentCard, setCurrentCard] = useState(store.currentCard || "");
     const [currentCard2, setCurrentCard2] = useState(store.currentCard2 || "");
     const [isLoading, setIsLoading] = useState(false);
+    const [confirmMove, setConfirmMove] = useState(false);
 
     const showToast = (message) => {
         ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -93,6 +94,7 @@ const PlayerNewCard = ({
             }
 
             setPlayerCurrentCards(updated);
+            setConfirmMove(true);
         }
     }, [validAction]);
 
@@ -108,43 +110,47 @@ const PlayerNewCard = ({
         return "";
     };
 
-    const confirmMove = async () => {
-        if (isLoading) return;
-        setIsLoading(true);
-        const command = await getCommand(action);
+    useEffect(() => {
+        const executeMove = async () => {
+            if (confirmMove) {
+                const command = await getCommand(action);
 
-        if (currentCard !== "block") {
-            store.setPlayerToMove(otherPlayer);
-        }
+                if (currentCard !== "block") {
+                    store.setPlayerToMove(otherPlayer);
+                }
 
-        if (currentCard !== "skip") {
-            sendCommand(command);
-            store.setInJunction(false);
-            store.setCurrentCard("");
-            store.setCurrentCard2("");
-            store.setCurrentCardId(4);
-            store.setCurrentCard2Id(4);
-            router.replace("/waiting");
-        } else {
-            showToast("You skipped this turn.");
-            store.setPlayerToMove(otherPlayer);
-            store.setCurrentCard("");
-            store.setCurrentCard2("");
-            store.setCurrentCardId(4);
-            store.setCurrentCard2Id(4);
-            router.replace(otherPlayerRoute, { key: playerName });
-        }
+                if (currentCard !== "skip") {
+                    await sendCommand(command);
+                    store.setInJunction(false);
+                    store.setCurrentCard("");
+                    store.setCurrentCard2("");
+                    store.setCurrentCardId(4);
+                    store.setCurrentCard2Id(4);
+                    router.replace("/waiting");
+                } else {
+                    showToast("You skipped this turn.");
+                    setTimeout(() => {
+                        store.setPlayerToMove(otherPlayer);
+                        store.setCurrentCard("");
+                        store.setCurrentCard2("");
+                        store.setCurrentCardId(4);
+                        store.setCurrentCard2Id(4);
+                        router.replace(otherPlayerRoute, { key: playerName });
+                    }, 200);
+                }
 
-        store.setCurrentCard("");
-        store.setCurrentCard2("");
-        store.setCurrentCardId(4);
-        store.setCurrentCard2Id(4);
-        setIsLoading(false);
-    };
+                store.setCurrentCard("");
+                store.setCurrentCard2("");
+                store.setCurrentCardId(4);
+                store.setCurrentCard2Id(4);
+            }
+        };
+        executeMove();
+    }, [confirmMove]);
 
     return (
         <View className="flex-1 gap-4">
-            <View className="flex items-center">
+            {/* <View className="flex items-center">
                 <Text className="text-xl text-slate-400">
                     <Text className="font-bold">{`${playerName}`}</Text>
                     {` new card`}
@@ -179,7 +185,7 @@ const PlayerNewCard = ({
                 >
                     <Text className="text-white font-bold">Continue</Text>
                 </TouchableOpacity>
-            </View>
+            </View> */}
         </View>
     );
 };

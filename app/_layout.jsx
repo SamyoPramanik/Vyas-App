@@ -7,7 +7,7 @@ export default function RootLayout() {
     return (
         <React.Fragment>
             <StatusBar style="light" />
-            <Stack />
+            <Stack screenOptions={{ animation: "none" }} />
         </React.Fragment>
     );
 }

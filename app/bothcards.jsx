@@ -34,11 +34,11 @@ const CardsPage = () => {
 
     const handleContinue = () => {
         sendCommand("T"); //T for autonomous mode
-        router.replace("/waiting");
+        router.replace("/player1");
     };
 
     return (
-        <SafeAreaView className="flex-1 px-2 box-border w-full h-full bg-black">
+        <SafeAreaView className="flex-1 px-2 box-border w-full h-full bg-gray-900">
             <Stack.Screen
                 options={{
                     headerShown: false,
@@ -49,9 +49,8 @@ const CardsPage = () => {
                 <View className="flex items-center gap-6">
                     <View className="flex w-1/2">
                         <View className="flex w-full items-center">
-                            <Text className="text-xl">
-                                <Text className="font-bold text-slate-400">{`${store.player1Name}`}</Text>
-                                {` cards`}
+                            <Text className="text-xl pb-3">
+                                <Text className="font-bold text-slate-400">{`${store.player1Name}'s cards`}</Text>
                             </Text>
                         </View>
                         <View className="flex-row w-full gap-1">
@@ -60,7 +59,7 @@ const CardsPage = () => {
                                     <SingleCard
                                         id={index + 1}
                                         name={card}
-                                        height="h-80"
+                                        height="h-60"
                                     />
                                 </View>
                             ))}
@@ -69,9 +68,8 @@ const CardsPage = () => {
                     {/* <View className="bg-slate-300 w-[1px]"></View> */}
                     <View className="flex w-1/2">
                         <View className="flex w-full items-center">
-                            <Text className="text-xl">
-                                <Text className="font-bold text-slate-400">{`${store.player2Name}`}</Text>
-                                {` cards`}
+                            <Text className="text-xl pb-3">
+                                <Text className="font-bold text-slate-400">{`${store.player2Name}'s cards`}</Text>
                             </Text>
                         </View>
                         <View className="flex-row w-full gap-1">
@@ -80,7 +78,7 @@ const CardsPage = () => {
                                     <SingleCard
                                         id={index + 1}
                                         name={card}
-                                        height="h-80"
+                                        height="h-60"
                                     />
                                 </View>
                             ))}

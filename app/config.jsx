@@ -1,4 +1,5 @@
 import {
+    KeyboardAvoidingView,
     ScrollView,
     Text,
     ToastAndroid,
@@ -27,6 +28,7 @@ export default function ConfigPage() {
         "I", //7
         "D", //8
         "E", //9
+        "T", //10
     ];
     const titles = [
         "Right", //0
@@ -39,6 +41,7 @@ export default function ConfigPage() {
         "M+", //7
         "M-", //8
         "Eprom", //9
+        "Switch", //10
     ];
     const store = useSecureStorage();
 
@@ -93,54 +96,58 @@ export default function ConfigPage() {
                     headerTintColor: "#94a3b8",
                 }}
             />
-            <View className="flex-row flex-wrap gap-3 items-center justify-center -mt-5">
-                {commands.map((command, index) => (
-                    <Button
-                        key={index}
-                        title={titles[index]}
-                        command={command}
-                        sendCommand={sendCommand}
-                    />
-                ))}
-            </View>
-            <View className="flex-1 p-4 gap-1">
-                <Text className="text-slate-400 font-semibold">
-                    Command Log
-                </Text>
-                <ScrollView
-                    ref={scrollViewRef}
-                    className="bg-gray-800 rounded-lg p-3 flex-1"
-                    contentContainerStyle={{ paddingBottom: 20 }}
-                    onContentSizeChange={() =>
-                        scrollViewRef.current?.scrollToEnd({ animated: true })
-                    }
-                >
-                    {log.map((entry, index) => (
-                        <Text key={index} className="text-slate-400 mb-1">
-                            {`${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()} ${entry}`}
-                        </Text>
+            <KeyboardAvoidingView behavior="padding" className="flex-1">
+                <View className="flex-row flex-wrap gap-3 items-center justify-center -mt-5">
+                    {commands.map((command, index) => (
+                        <Button
+                            key={index}
+                            title={titles[index]}
+                            command={command}
+                            sendCommand={sendCommand}
+                        />
                     ))}
-                </ScrollView>
-                <View className="flex flex-row items-center justify-center gap-1">
-                    <TextInput
-                        className="border border-slate-500 text-slate-400 rounded-lg p-2 flex-1"
-                        placeholder="Type your command..."
-                        value={textInput}
-                        onChangeText={(text) => setTextInput(text)}
-                    />
-                    <TouchableOpacity
-                        className="bg-blue-500 rounded-lg p-2"
-                        onPress={() => {
-                            sendCommand(textInput);
-                            setTextInput("");
-                        }}
-                    >
-                        <Text className="text-white text-lg font-bold">
-                            Send
-                        </Text>
-                    </TouchableOpacity>
                 </View>
-            </View>
+                <View className="flex-1 p-4 gap-1">
+                    <Text className="text-slate-400 font-semibold">
+                        Command Log
+                    </Text>
+                    <ScrollView
+                        ref={scrollViewRef}
+                        className="bg-gray-800 rounded-lg p-3 flex-1"
+                        contentContainerStyle={{ paddingBottom: 20 }}
+                        onContentSizeChange={() =>
+                            scrollViewRef.current?.scrollToEnd({
+                                animated: true,
+                            })
+                        }
+                    >
+                        {log.map((entry, index) => (
+                            <Text key={index} className="text-slate-400 mb-1">
+                                {`${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()} ${entry}`}
+                            </Text>
+                        ))}
+                    </ScrollView>
+                    <View className="flex flex-row items-center justify-center gap-1">
+                        <TextInput
+                            className="border border-slate-500 text-slate-400 rounded-lg p-2 flex-1"
+                            placeholder="Type your command..."
+                            value={textInput}
+                            onChangeText={(text) => setTextInput(text)}
+                        />
+                        <TouchableOpacity
+                            className="bg-blue-500 rounded-lg p-2"
+                            onPress={() => {
+                                sendCommand(textInput);
+                                setTextInput("");
+                            }}
+                        >
+                            <Text className="text-white text-lg font-bold">
+                                Send
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </KeyboardAvoidingView>
         </SafeAreaView>
     );
 }

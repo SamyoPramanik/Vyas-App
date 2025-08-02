@@ -1,4 +1,10 @@
-import { View, Text, ToastAndroid, TouchableOpacity, Image } from "react-native";
+import {
+    View,
+    Text,
+    ToastAndroid,
+    TouchableOpacity,
+    Image,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import useSecureStorage from "../utils/store";
 import SingleCard from "../components/SingleCard";
@@ -22,7 +28,7 @@ const Player = ({
     isLoading,
     onContinue,
     showBlock,
-    handleNoValidMove
+    handleNoValidMove,
 }) => {
     const store = useSecureStorage();
     const [permission, requestPermission] = useCameraPermissions();
@@ -36,37 +42,38 @@ const Player = ({
         }
     }, [store.cameraFacing, permission]);
 
-
-
-
     return (
-
         <View className="flex-1 flex-row" key={key}>
             <View className="flex px-6 py-4 w-[30%] relative">
-                {showBlock &&
-                <Image
-                    source={require('../assets/images/block.png')}
-                    className="rounded-lg absolute z-10"
-                    style={{
-                        top: 150,
-                        right: -50,
-                        transform: [{ scale: 0.5 }],
-                    }}
-                />
-                }
+                {showBlock && (
+                    <Image
+                        source={require("../assets/images/block.png")}
+                        className="rounded-lg absolute z-10"
+                        style={{
+                            top: 150,
+                            right: -50,
+                            transform: [{ scale: 0.5 }],
+                        }}
+                    />
+                )}
                 <Toolbar />
                 <View className="flex h-fit items-center mt-10 z-0">
                     <Text className="text-3xl text-violet-100">
                         <Text className="font-bold">{`${playerName}`}</Text>
                         {`'s turn`}
                     </Text>
-                    <Text className="text-base text-slate-400">Current State : {store.currentJunction}</Text>
+                    <Text className="text-base text-slate-400">
+                        Current State : {store.currentJunction}
+                    </Text>
                 </View>
                 {showNewCardUI ? (
                     <View className="flex items-center mt-8 z-0">
                         <Text className="text-xl text-slate-200">
                             Card {currentCardId + 1}
-                            {currentCard2Id !== 4 ? ` and ${currentCard2Id + 1}` : ''} has been changed to...
+                            {currentCard2Id !== 4
+                                ? ` and ${currentCard2Id + 1}`
+                                : ""}{" "}
+                            has been changed to...
                         </Text>
                         <View className="flex-col justify-center gap-2">
                             {currentCardId < 4 && (
@@ -94,7 +101,9 @@ const Player = ({
                             disabled={isLoading}
                             className="flex items-center p-4 w-1/2 bg-blue-500 rounded-lg mt-4"
                         >
-                            <Text className="text-white font-bold">Continue</Text>
+                            <Text className="text-white font-bold">
+                                Continue
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 ) : (
@@ -120,7 +129,9 @@ const Player = ({
                             onPress={handleNoValidMove}
                             className="flex items-center p-4 w-1/2 bg-cyan-950 rounded-lg"
                         >
-                            <Text className="text-slate-400 font-bold">No valid move</Text>
+                            <Text className="text-slate-400 font-bold">
+                                No valid move
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 )}
@@ -128,12 +139,14 @@ const Player = ({
             <View className="m-4 mt-10 rounded-xl border-4 border-violet-200 overflow-hidden flex-1">
                 <CameraView
                     style={{ flex: 1 }}
-                    key={cameraKeyState}
+                    key={cameraKey}
                     facing={cameraFacing}
                     barcodeScannerSettings={{
                         barcodeTypes: ["qr"],
                     }}
-                    onBarcodeScanned={showNewCardUI ? undefined : ({ data }) => onQrCode(data)}
+                    onBarcodeScanned={
+                        showNewCardUI ? undefined : ({ data }) => onQrCode(data)
+                    }
                 >
                     <View className="flex-1"></View>
                 </CameraView>

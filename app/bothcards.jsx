@@ -34,7 +34,7 @@ const CardsPage = () => {
 
     const handleContinue = () => {
         sendCommand("T"); //T for autonomous mode
-        router.replace("/player1");
+        router.replace("/player");
     };
 
     return (

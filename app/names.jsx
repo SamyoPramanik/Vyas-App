@@ -19,8 +19,9 @@ const NamesPage = () => {
     }, []);
 
     useEffect(() => {
+        setPlayer1Name("Player 1");
+        setPlayer2Name("Player 2");
         if (initialized) {
-            showToast("Game starting...");
             router.replace("/bothcards");
         }
     }, [initialized]);
@@ -61,7 +62,7 @@ const NamesPage = () => {
         store.setWinner("");
         store.setInJunction(false);
         store.setCurrentJunction(0);
-        store.setCardVisible(false);
+        store.setCardVisible(true);
         (async () => {
             const forwardCommand =
                 (await SecureStore.getItemAsync("forwardCommand")) || "f";
@@ -132,7 +133,7 @@ const NamesPage = () => {
     };
 
     return (
-        <SafeAreaView className="flex-1 px-6 box-border bg-black">
+        <SafeAreaView className="flex-1 px-6 box-border bg-gray-900">
             <Stack.Screen
                 options={{
                     headerShown: false,
@@ -140,7 +141,7 @@ const NamesPage = () => {
             />
             <Toolbar />
             <View className="flex justify-center items-center gap-1">
-                <View className="flex w-1/2 p-1">
+                <View className="flex justify-center h-screen pb-52 w-1/2">
                     <View className="items-center p-1">
                         <Text className="text-6xl font-bold text-slate-400">
                             Vyas
@@ -155,6 +156,7 @@ const NamesPage = () => {
                             value={player1Name}
                             className="border border-slate-500 p-3 rounded-md mb-4 text-slate-400"
                             placeholder="Player 1"
+                            placeholderTextColor="#6D7887"
                         />
                     </View>
                     <View className="flex gap-1">
@@ -166,6 +168,7 @@ const NamesPage = () => {
                             value={player2Name}
                             className="border border-slate-500 p-3 rounded-md mb-4 text-slate-400"
                             placeholder="Player 2"
+                            placeholderTextColor="#6D7887"
                         />
                     </View>
                     <View className="flex justify-center">

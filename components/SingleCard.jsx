@@ -44,11 +44,11 @@ const SingleCard = ({ id, name, height, currentCard }) => {
             className={`flex w-full p-1 items-center justify-center ${getCurrentCardUi()}`}
         >
             <ImageBackground
-                className={`flex items-center justify-center rounded-xl w-full ${height} mb-1 ${setCardColor()}`}
+                className={`flex items-center justify-center rounded-xl w-full ${height} mb-1 ${setCardColor()} mb-4`}
                 source={getImageSource()}
             ></ImageBackground>
             <Text
-                className="text-md text-slate-400 scale-125"
+                className="text-md text-slate-200 scale-125"
                 style={{
                     textShadowColor: "#000",
                     textShadowOffset: { width: -1, height: 1 },

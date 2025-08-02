@@ -5,6 +5,7 @@ import {
     powerCards,
 } from "./constants";
 import useSecureStorage from "./store";
+import { ToastAndroid } from "react-native";
 
 export const randomActionCard = (junction = null) => {
     if (junction == null) {
@@ -14,7 +15,6 @@ export const randomActionCard = (junction = null) => {
     }
     const moveOptions = [];
     const possibleNextJunctions = [...Object.values(nextJunction[junction])];
-
     for (const nextjunction of possibleNextJunctions) {
         moveOptions.push(...allowedMoves[nextjunction]);
     }
@@ -40,27 +40,51 @@ export const randomPowerCard = () => {
     const idx = Math.floor(Math.random() * 1009) % 6;
     return powerCards[idx];
 };
-
-export const isValidMove = (move) => {
+const showToast = (message) => {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+};
+export const isValidMove = (move, player, verbose) => {
+    // verbose lets decide whether states should be changed and whether outputs are shown
     const store = useSecureStorage.getState();
-    if (store.bannedCard === move) {
-        console.log("You cannot use this card, it is banned.");
+    if (store.bannedCard === move && store.bannedByPlayer !== player) {
+        if (verbose) {
+            showToast("You cannot use this card, it is banned.");
+        }
         return false;
     }
-    if (move === "") return false;
+    if (move === "") {
+        if (verbose) {
+            showToast("Invalid move, please select a valid card.");
+        }
+        return false;
+    }
     let validMove = false;
     allowedMoves[parseInt(store.currentJunction)].forEach((element) => {
         if (element === move) {
             validMove = true;
         }
     });
-    if (!validMove) return false;
-    updateJunction(move);
-    store.setBannedCard("");
+    if (!validMove) {
+        if (move != undefined) {
+            if (verbose) {
+                showToast("there is no " + move + " from this junction.");
+            }
+        } else {
+            if (verbose) {
+                showToast("there is no move to apply.");
+            }
+        }
+        return false;
+    }
+    if (verbose) {
+        updateJunction(move);
+        store.setBannedCard("");
+        store.setBannedByPlayer("");
+    }
     return true;
 };
 
-export const findAction = (player, card1, card2) => {
+export const findAction = (player, card1, card2, junction) => {
     const store = useSecureStorage.getState();
     if (card1 === "block" || card1 === "ban") {
         return card2;
@@ -78,7 +102,7 @@ export const findAction = (player, card1, card2) => {
         return "right";
     }
     if (card1 === "wild") {
-        const action = randomActionCard();
+        const action = randomActionCard(junction);
         return action;
     }
     if (card1 === "echo") {
@@ -125,36 +149,44 @@ export const genNewCard = (card1) => {
         card1 === "left" ||
         card1 === "right"
     ) {
-        return randomActionCard(parseInt(store.currentJunction));
+        return randomActionCard();
     }
 };
 
-export const addAction = (player, card1, card2) => {
+export const addAction = (player, card1, card2, action) => {
     const store = useSecureStorage.getState();
-    store.addRecentMove(card1);
+
     if (
         card1 === "forward" ||
         card1 === "backward" ||
         card1 === "left" ||
-        card1 === "right"
+        card1 === "right" ||
+        card1 === "wild"
     ) {
         if (player === "player1") {
-            store.addPlayer1Move(card1);
+            store.addPlayer1Move(action);
         }
         if (player === "player2") {
-            store.addPlayer2Move(card1);
+            store.addPlayer2Move(action);
         }
+        store.addRecentMove(action);
     } else if (card1 === "block" || card1 === "ban") {
         if (player === "player1") {
-            store.addPlayer1Move(card2);
+            store.addPlayer1Move(action);
         }
         if (player === "player2") {
-            store.addPlayer2Move(card2);
+            store.addPlayer2Move(action);
         }
+        store.addRecentMove(action);
     }
 
     if (card1 === "ban") {
         store.setBannedCard(card2);
+        store.setBannedByPlayer(player);
+    }
+    if (card1 === "block") {
+        store.setIsBlocked(true);
+        store.setBlockedBy(player);
     }
 };
 
@@ -162,5 +194,6 @@ export const updateJunction = (move) => {
     const store = useSecureStorage.getState();
     const currentJunction = parseInt(store.currentJunction);
     const nextJunc = nextJunction[currentJunction][move];
+    console.log("nextJunc " + nextJunc);
     store.setCurrentJunction(nextJunc);
 };

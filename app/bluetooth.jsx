@@ -47,10 +47,18 @@ const BlueToothPage = () => {
     };
 
     return (
-        <SafeAreaView className="flex-1 box-border">
+        <SafeAreaView className="flex-1 box-border bg-gray-900">
             <Stack.Screen
+                name="BluetoothDevices"
                 options={{
                     title: "Bluetooth Devices",
+                    headerStyle: {
+                        backgroundColor: '#1e293b', // e.g., slate-800
+                    },
+                    headerTintColor: '#f1f5f9',   // text/icon color (e.g., slate-100)
+                    headerTitleStyle: {
+                        fontWeight: 'bold',
+                    },
                 }}
             />
             <View className="flex">
@@ -59,7 +67,7 @@ const BlueToothPage = () => {
                     keyExtractor={(item) => item.address}
                     renderItem={({ item }) => (
                         <TouchableOpacity
-                            className="flex border-b border-gray-300 py-4 px-2 w-full"
+                            className="flex border-b bg-gray-800 py-4 px-2 w-full"
                             onPress={() => connectToDevice(item)}
                             activeOpacity={0.7}
                         >
